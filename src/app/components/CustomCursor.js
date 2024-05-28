@@ -1,36 +1,23 @@
 // components/CustomCursor.js
-import React, { useEffect, useState } from "react";
-import { motion, useSpring, useMotionValue } from "framer-motion";
+import React, { useEffect } from "react";
 
 const CustomCursor = () => {
-  const cursorX = useMotionValue(-100);
-  const cursorY = useMotionValue(-100);
-
-  const springConfig = { damping: 35, stiffness: 400 };
-  const cursorSpringX = useSpring(cursorX, springConfig);
-  const cursorSpringY = useSpring(cursorY, springConfig);
-
   useEffect(() => {
-    const moveCursor = (e) => {
-      cursorX.set(e.clientX - 20); // Adjust for cursor size
-      cursorY.set(e.clientY - 20); // Adjust for cursor size
+    const cursor = document.querySelector(".cursor");
+
+    const handleMouseMove = (e) => {
+      cursor.style.left = `${e.clientX}px`;
+      cursor.style.top = `${e.clientY}px`;
     };
 
-    window.addEventListener("mousemove", moveCursor);
+    window.addEventListener("mousemove", handleMouseMove);
+
     return () => {
-      window.removeEventListener("mousemove", moveCursor);
+      window.removeEventListener("mousemove", handleMouseMove);
     };
-  }, [cursorX, cursorY]);
+  }, []);
 
-  return (
-    <motion.div
-      className="cursor"
-      style={{
-        translateX: cursorSpringX,
-        translateY: cursorSpringY,
-      }}
-    />
-  );
+  return <div className="cursor" />;
 };
 
 export default CustomCursor;

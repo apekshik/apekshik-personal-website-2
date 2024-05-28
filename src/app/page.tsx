@@ -44,7 +44,7 @@ export default function Home() {
               className="fade-in font-bebas text-7xl font-bold text-white"
               onClick={handleStart}
             >
-              Click to Start
+              Click to start
             </button>
           )}
         </div>
