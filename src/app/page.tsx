@@ -41,10 +41,10 @@ export default function Home() {
         >
           {showStartButton && (
             <button
-              className="fade-in text-3xl font-bold text-white"
+              className="fade-in font-bebas text-7xl font-bold text-white"
               onClick={handleStart}
             >
-              Click to start
+              Click to Start
             </button>
           )}
         </div>
