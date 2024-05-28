@@ -1,7 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import backgroundPic from "../../public/alien_wallpaper.jpg";
+import frontPic from "../../public/alien-wall-3.png";
+import backPic from "../../public/alien_wallpaper.jpg";
 import bannerPic from "../../public/bottom-left-banner.png";
 
 import RippleEffect from "./components/RippleEffect";
@@ -45,7 +46,6 @@ export default function Home() {
           )}
         </div>
       )}
-
       <div
         className={`duration-3000 absolute inset-0 transition-opacity ${
           started ? "opacity-100" : "opacity-0"
@@ -55,7 +55,7 @@ export default function Home() {
         {/* Background Image */}
         <div className="absolute inset-0 z-0 scale-75">
           <Image
-            src={backgroundPic}
+            src={backPic}
             alt="Background"
             layout="fill"
             objectFit="cover"
@@ -64,12 +64,23 @@ export default function Home() {
         </div>
 
         {/* Particle Background */}
-        <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 z-10">
           <ParticlesBackground />
         </div>
 
+        {/* Background Image */}
+        <div className="absolute inset-0 z-20 scale-75">
+          <Image
+            src={frontPic}
+            alt="Background"
+            layout="fill"
+            objectFit="cover"
+            priority
+          />
+        </div>
+
         {/* Navbar at the top */}
-        <nav className="relative top-0 z-10 flex w-full items-center justify-between py-8 pl-8 pr-16 text-white">
+        <nav className="relative top-0 z-20 flex w-full items-center justify-between py-8 pl-8 pr-16 text-white">
           <h1 className="font-bebas text-2xl font-bold">Apekshik Panigrahi</h1>
           <div className="flex gap-12 font-bebas text-2xl">
             <div className="flex-item">Home</div>
@@ -95,7 +106,7 @@ export default function Home() {
         </div>
 
         {/* Banner at the bottom left */}
-        <div className="absolute bottom-0 left-0 z-10 p-8">
+        <div className="absolute bottom-0 left-0 z-20 p-8">
           <Image
             src={bannerPic}
             alt="Banner"
@@ -103,16 +114,6 @@ export default function Home() {
             height={100} // Adjust size as needed
             priority
           />
-        </div>
-
-        {/* Ripple Effect Component placement */}
-        <div
-          className="absolute bottom-0 right-0 p-8"
-          style={{ height: "50%", width: "50%" }}
-        >
-          <div className="flex h-full items-center justify-center">
-            <RippleEffect />
-          </div>
         </div>
       </div>
     </div>
