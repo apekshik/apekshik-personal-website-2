@@ -1,113 +1,120 @@
+"use client";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import backgroundPic from "../../public/alien_wallpaper.jpg";
+import bannerPic from "../../public/bottom-left-banner.png";
+
+import RippleEffect from "./components/RippleEffect";
+import ParticlesBackground from "./components/ParticlesBackground";
 
 export default function Home() {
+  const [started, setStarted] = useState(false);
+  const [showStartButton, setShowStartButton] = useState(false);
+  const [fadeOut, setFadeOut] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowStartButton(true);
+    }, 500); // 3 seconds delay for the cinematic intro
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleStart = () => {
+    setFadeOut(true);
+    setTimeout(() => {
+      setStarted(true);
+    }, 3000); // 3 seconds fade-out duration
+  };
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div className="relative h-screen w-full overflow-hidden">
+      {!started && (
+        <div
+          className={`absolute inset-0 z-50 flex items-center justify-center bg-transparent ${
+            fadeOut ? "fade-out" : "fade-in"
+          }`}
+        >
+          {showStartButton && (
+            <button
+              className="fade-in text-3xl font-bold text-white"
+              onClick={handleStart}
+            >
+              Click to start
+            </button>
+          )}
+        </div>
+      )}
+
+      <div
+        className={`duration-3000 absolute inset-0 transition-opacity ${
+          started ? "opacity-100" : "opacity-0"
+        }`}
+        style={{ transitionDuration: "5s" }} // Increase duration to 5s
+      >
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0 scale-75">
+          <Image
+            src={backgroundPic}
+            alt="Background"
+            layout="fill"
+            objectFit="cover"
+            priority
+          />
+        </div>
+
+        {/* Particle Background */}
+        <div className="absolute inset-0 z-0">
+          <ParticlesBackground />
+        </div>
+
+        {/* Navbar at the top */}
+        <nav className="relative top-0 z-10 flex w-full items-center justify-between py-8 pl-8 pr-16 text-white">
+          <h1 className="font-bebas text-2xl font-bold">Apekshik Panigrahi</h1>
+          <div className="flex gap-12 font-bebas text-2xl">
+            <div className="flex-item">Home</div>
+            <div className="flex-item">About</div>
+            <div className="flex-item">Blog</div>
+            <div className="flex-item">Contact</div>
+            <div className="flex-item">Resume</div>
+          </div>
+        </nav>
+
+        {/* Main Body */}
+        <div className="z-10 flex h-full items-start justify-end">
+          <div className="relative mr-16 mt-64 pr-4 text-right font-mono text-white">
+            <p className="py-2 text-lg">Deep Learning Researcher</p>
+            <p className="py-2 text-lg">Founding Platform Engineer at Euso</p>
+            <p className="py-2 text-lg">Full-Stack Web3 Developer</p>
+            <p className="py-2 text-lg">A Physicist</p>
+            <p className="py-2 text-lg">Toon Boom Harmony Animator</p>
+            <p className="py-2 text-lg">SwiftUI Developer</p>
+            {/* Vertical Line */}
+            <div className="absolute right-0 top-0 h-full w-1 bg-white"></div>{" "}
+          </div>
+        </div>
+
+        {/* Banner at the bottom left */}
+        <div className="absolute bottom-0 left-0 z-10 p-8">
+          <Image
+            src={bannerPic}
+            alt="Banner"
+            width={500} // Adjust size as needed
+            height={100} // Adjust size as needed
+            priority
+          />
+        </div>
+
+        {/* Ripple Effect Component placement */}
+        <div
+          className="absolute bottom-0 right-0 p-8"
+          style={{ height: "50%", width: "50%" }}
+        >
+          <div className="flex h-full items-center justify-center">
+            <RippleEffect />
+          </div>
         </div>
       </div>
-
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    </div>
   );
 }
