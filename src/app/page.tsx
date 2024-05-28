@@ -7,6 +7,7 @@ import bannerPic from "../../public/bottom-left-banner.png";
 
 import RippleEffect from "./components/RippleEffect";
 import ParticlesBackground from "./components/ParticlesBackground";
+import CustomCursor from "./components/CustomCursor";
 
 export default function Home() {
   const [started, setStarted] = useState(false);
@@ -30,6 +31,8 @@ export default function Home() {
 
   return (
     <div className="relative h-screen w-full overflow-hidden">
+      <CustomCursor />
+
       {!started && (
         <div
           className={`absolute inset-0 z-50 flex items-center justify-center bg-transparent ${
@@ -52,24 +55,13 @@ export default function Home() {
         }`}
         style={{ transitionDuration: "5s" }} // Increase duration to 5s
       >
-        {/* Background Image */}
-        <div className="absolute inset-0 z-0 scale-75">
-          <Image
-            src={backPic}
-            alt="Background"
-            layout="fill"
-            objectFit="cover"
-            priority
-          />
-        </div>
-
         {/* Particle Background */}
         <div className="absolute inset-0 z-10">
           <ParticlesBackground />
         </div>
 
         {/* Background Image */}
-        <div className="absolute inset-0 z-20 scale-75">
+        <div className="absolute inset-0 z-10 scale-75">
           <Image
             src={frontPic}
             alt="Background"
