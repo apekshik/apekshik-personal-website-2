@@ -16,6 +16,13 @@ const PostPage = async ({ params }) => {
       <div className="max-w-3xl mx-auto px-8 py-12 relative z-10">
         <h1 className="text-6xl font-bold mb-6 text-center font-bebas">{data.title}</h1>
         <div className="font-bebas text-2xl text-gray-400 mb-4 text-center">{data.date}</div>
+        {data.image && (
+          <img
+            src={data.image}
+            alt={data.title}
+            className="w-full h-150 object-cover mb-4 rounded-lg"
+          />
+        )}
         <article className="prose prose-invert lg:prose-xl">
           <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
         </article>

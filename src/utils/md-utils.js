@@ -38,24 +38,28 @@ export const getPosts = () => {
   return posts;
 };
 
-export const getAllPostIds = () => {
-  return postFilePaths.map((filePath) => ({
+export function getAllPostIds() {
+  const fileNames = fs.readdirSync(POSTS_PATH);
+  return fileNames.map((fileName) => ({
     params: {
-      slug: filePath.replace(/\.md$/, ''),
+      slug: fileName.replace(/\.md$/, ''),
     },
   }));
-};
+}
 
-export const getPostBySlug = async (slug) => {
-  const postFilePath = path.join(POSTS_PATH, `${slug}.md`);
-  const source = fs.readFileSync(postFilePath, 'utf8');
+export async function getPostBySlug(slug) {
+  const fullPath = path.join(POSTS_PATH, `${slug}.md`);
+  const fileContents = fs.readFileSync(fullPath, 'utf8');
 
-  const { content, data } = matter(source);
+  const matterResult = matter(fileContents);
 
   const processedContent = await remark()
     .use(html)
-    .process(content);
+    .process(matterResult.content);
   const contentHtml = processedContent.toString();
 
-  return { contentHtml, data, postFilePath };
-};
+  return {
+    contentHtml,
+    data: matterResult.data,
+  };
+}

@@ -11,7 +11,7 @@ export default async function Blog() {
     <div className="min-h-screen bg-black text-white py-12 overflow-auto relative">
       <ParticlesBackground className="absolute inset-0 z-0 backdrop-blur-lg" />
       <div className="absolute inset-0 z-0 bg-black bg-opacity-50"></div>
-      <div className="max-w-4xl mx-auto px-4 relative z-10">
+      <div className="max-w-5xl mx-auto px-4 relative z-10">
         <div className="flex justify-between items-center mb-12">
           <h1 className="text-7xl font-bold text-left font-bebas">Apekshik's Blog</h1>
           <Link href="/">
