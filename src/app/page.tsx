@@ -8,6 +8,7 @@ import bannerPic from "../../public/bottom-left-banner.png";
 import RippleEffect from "./components/RippleEffect";
 import ParticlesBackground from "./components/ParticlesBackground";
 import CustomCursor from "./components/CustomCursor";
+import { Link } from "@nextui-org/react";
 
 export default function Home() {
   const [started, setStarted] = useState(false);
@@ -41,7 +42,7 @@ export default function Home() {
         >
           {showStartButton && (
             <button
-              className="fade-in font-bebas text-7xl font-bold text-white"
+              className="fade-in font-bebas text-6xl font-bold text-white"
               onClick={handleStart}
             >
               Click to start
@@ -65,9 +66,9 @@ export default function Home() {
           <Image
             src={frontPic}
             alt="Background"
-            layout="fill"
-            objectFit="cover"
-            priority
+            fill={true}
+            style={{ objectFit: "contain" }}
+            priority={true}
           />
         </div>
 
@@ -77,7 +78,9 @@ export default function Home() {
           <div className="flex gap-12 font-bebas text-2xl">
             <div className="flex-item">Home</div>
             <div className="flex-item">About</div>
-            <div className="flex-item">Blog</div>
+            <Link href="/blog">
+              <div className="flex-item">Blog</div>
+            </Link>
             <div className="flex-item">Contact</div>
             <div className="flex-item">Resume</div>
           </div>
