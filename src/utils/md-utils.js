@@ -59,39 +59,3 @@ export const getPostBySlug = async (slug) => {
 
   return { contentHtml, data, postFilePath };
 };
-
-export const getNextPostBySlug = (slug) => {
-  const posts = getPosts();
-  const currentFileName = `${slug}.md`;
-  const currentPost = posts.find((post) => post.filePath === currentFileName);
-  const currentPostIndex = posts.indexOf(currentPost);
-
-  const post = posts[currentPostIndex - 1];
-  // no prev post found
-  if (!post) return null;
-
-  const nextPostSlug = post?.filePath.replace(/\.md$/, '');
-
-  return {
-    title: post.data.title,
-    slug: nextPostSlug,
-  };
-};
-
-export const getPreviousPostBySlug = (slug) => {
-  const posts = getPosts();
-  const currentFileName = `${slug}.md`;
-  const currentPost = posts.find((post) => post.filePath === currentFileName);
-  const currentPostIndex = posts.indexOf(currentPost);
-
-  const post = posts[currentPostIndex + 1];
-  // no prev post found
-  if (!post) return null;
-
-  const previousPostSlug = post?.filePath.replace(/\.md$/, '');
-
-  return {
-    title: post.data.title,
-    slug: previousPostSlug,
-  };
-};

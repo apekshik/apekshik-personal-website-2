@@ -1,25 +1,27 @@
-import { getAllPostIds, getPostData } from '../../../lib/posts';
+import { getPostBySlug, getAllPostIds } from '../../../utils/md-utils';
 import ParticlesBackground from '../../components/ParticlesBackground';
 
 export async function generateStaticParams() {
   const paths = getAllPostIds();
-  return paths.map((path) => ({
-    slug: path.params.slug,
-  }));
+  return paths;
 }
 
-export default async function Post({ params }) {
-  const postData = await getPostData(params.slug);
+const PostPage = async ({ params }) => {
+  const { contentHtml, data } = await getPostBySlug(params.slug);
 
   return (
-    <div className="min-h-screen bg-black text-white relative">
-      <ParticlesBackground className="absolute inset-0 z-0" />
-      <div className="absolute inset-0 z-0 bg-black bg-opacity-50 backdrop-blur-md"></div>
-      <div className="max-w-3xl mx-auto px-8 py-12 relative z-10 overflow-y-auto">
-        <h1 className="text-4xl font-bold mb-6 text-center font-bebas">{postData.title}</h1>
-        <div className="text-gray-400 mb-4 text-center">{postData.date}</div>
-        <div className="prose lg:prose-xl prose-invert" dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
+    <div className="min-h-screen bg-black text-white py-12 overflow-auto relative">
+      <ParticlesBackground className="absolute inset-0 z-0 backdrop-blur-lg" />
+      <div className="absolute inset-0 z-0 bg-black bg-opacity-50"></div>
+      <div className="max-w-3xl mx-auto px-8 py-12 relative z-10">
+        <h1 className="text-6xl font-bold mb-6 text-center font-bebas">{data.title}</h1>
+        <div className="font-bebas text-3xl text-gray-400 mb-4 text-center">{data.date}</div>
+        <article className="prose prose-invert lg:prose-xl">
+          <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
+        </article>
       </div>
     </div>
   );
-}
+};
+
+export default PostPage;

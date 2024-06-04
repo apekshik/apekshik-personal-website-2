@@ -1,5 +1,5 @@
 ---
-title: How to create SVG-ready icon symbols in Sketch PART 2
+title: Test File To See How Markdown Renders with my custom Tailwind Typography
 description: "Something has always existed. According to physics, there can never be true physical nothingness—though there can be times when existence resembles nothing, such as a vacuum (the state of minimum possible energy) (Phys.org). Creating a space where there are no quantum."
 date: May 8 2023
 ---
@@ -70,7 +70,7 @@ Start numbering with offset:
 
 ## Code
 
-Inline `code`
+Inline `what the hell`
 
 Indented code
 
@@ -87,7 +87,7 @@ Sample text here...
 
 Syntax highlighting
 
-```js
+```ts
 var foo = function (bar) {
   return bar++;
 };
@@ -95,21 +95,35 @@ var foo = function (bar) {
 console.log(foo(5));
 ```
 
-## Tables
+## Example Table
 
-| Option | Description                                                               |
-| ------ | ------------------------------------------------------------------------- |
-| data   | path to data files to supply the data that will be passed into templates. |
-| engine | engine to be used for processing templates. Handlebars is the default.    |
-| ext    | extension to be used for dest files.                                      |
+Here is an example of a table in Markdown:
 
-Right aligned columns
+| Name      | Age | Occupation        |
+| --------- | --- | ----------------- |
+| John Doe  | 29  | Software Engineer |
+| Jane Smith| 34  | Product Manager   |
+| Bob Johnson | 45 | Designer          |
 
-| Option |                                                               Description |
-| -----: | ------------------------------------------------------------------------: |
-|   data | path to data files to supply the data that will be passed into templates. |
-| engine |    engine to be used for processing templates. Handlebars is the default. |
-|    ext |                                      extension to be used for dest files. |
+## Right-Aligned Columns
+
+You can also right-align specific columns:
+
+| Name      |       Age | Occupation        |
+| --------- | --------: | ----------------- |
+| John Doe  |       29  | Software Engineer |
+| Jane Smith|       34  | Product Manager   |
+| Bob Johnson |     45  | Designer          |
+
+## Complex Table
+
+Including multiple headers and varying cell content:
+
+| Feature       | Description                                                  | Supported Versions       |
+| ------------- | ------------------------------------------------------------ | ------------------------ |
+| **Markdown**  | Markdown allows you to write using an easy-to-read, easy-to-write plain text format. | All versions             |
+| **HTML**      | HTML is the standa
+
 
 ## Links
 
