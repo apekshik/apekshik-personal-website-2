@@ -11,7 +11,7 @@ import CustomCursor from "./components/CustomCursor";
 import { Link } from "@nextui-org/react";
 
 export default function Home() {
-  const [started, setStarted] = useState(false);
+  const [started, setStarted] = useState(true);
   const [showStartButton, setShowStartButton] = useState(false);
   const [fadeOut, setFadeOut] = useState(false);
 

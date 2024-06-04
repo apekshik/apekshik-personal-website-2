@@ -1,5 +1,5 @@
 ---
-title: How SBF Siphoned Money to Alameda Research
+title: How SBF Siphoned $10.1 Billion Dollars to Alameda Research
 description: "An in-depth look at the financial scandal involving FTX and Alameda Research, orchestrated by Sam Bankman-Fried."
 date: June 3 2024
 image: "https://i.imgur.com/YVBXV9A.jpeg"
