@@ -1,7 +1,8 @@
 ---
 title: Understanding Qubits and Quantum Algorithms
 description: "Exploring the fundamentals of qubits, the building blocks of quantum computing, and the algorithms that leverage their unique properties."
-date: June 3 2024
+date: June 1 2024
+image: "https://i.imgur.com/Rv5JEXa.jpeg"
 ---
 
 Quantum computing represents a new paradigm of computation that leverages the principles of quantum mechanics to process information in ways that classical computers cannot. At the heart of this revolutionary technology are qubits and quantum algorithms.

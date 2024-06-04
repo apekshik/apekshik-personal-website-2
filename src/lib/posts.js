@@ -22,7 +22,13 @@ export function getSortedPostsData() {
       content: matterResult.content, // Include content
     };
   });
-  return allPostsData.sort((a, b) => (a.date < b.date ? 1 : -1));
+
+  // Parse the dates and sort the posts
+  return allPostsData.sort((a, b) => {
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+    return dateB - dateA;
+  });
 }
 
 export async function getPostData(id) {
