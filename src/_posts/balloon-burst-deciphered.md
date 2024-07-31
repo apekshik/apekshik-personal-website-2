@@ -5,7 +5,7 @@ date: July 30 2024
 image: "https://i.imgur.com/BYOuGr4.jpg"
 ---
 
-After thoroughly understanding what DP problems are and how they're tackled, I want to get my toes wet by actually trying to solve a problem from Leetcode. I asked ChatGPT-4o to give me a problem and I got this problem (it's a Leetcode Hard) : Balloon Burst. The problem statement is goes like this
+After thoroughly understanding what DP problems are and how they're tackled, I want to get my toes wet by actually trying to solve a problem from Leetcode. I asked ChatGPT-4o to give me a problem and I got this problem (it's a Leetcode Hard) : Balloon Burst. The problem statement goes like this
 
 > You are given `n` balloons, indexed from `0` to `n - 1`. Each balloon is painted with a number on it represented by an array `nums`. You are asked to burst all the balloons.
 > 
