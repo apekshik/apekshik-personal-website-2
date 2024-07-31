@@ -1,0 +1,17 @@
+.sprite {
+    width: 72px; /* Width of a single frame */
+    height: 72px; /* Height of a single frame */
+    background-image: url('../../../public/boss-walk-1.png'); /* Path should be in the public directory */
+    background-repeat: no-repeat;
+    animation: play 1s steps(6) infinite; /* 4 is the number of frames */
+  }
+  
+  @keyframes play {
+    from { background-position: 0px; }
+    to { background-position: -432px; } /* Total width of sprite sheet */
+  }
+  
+  .playing {
+    animation: play 1s steps(6) infinite;
+  }
+  

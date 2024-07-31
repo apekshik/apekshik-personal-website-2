@@ -8,7 +8,9 @@ import bannerPic from "../../public/bottom-left-banner.png";
 import RippleEffect from "./components/RippleEffect";
 import ParticlesBackground from "./components/ParticlesBackground";
 import CustomCursor from "./components/CustomCursor";
-import { Link } from "@nextui-org/react";
+import { Link, Button } from "@nextui-org/react";
+import WorkDropDownMenu from "./components/WorkDropDownMenu";
+import SpriteAnimation from "./components/SpriteAnimation";
 
 export default function Home() {
   const [started, setStarted] = useState(true);
@@ -76,11 +78,10 @@ export default function Home() {
         <nav className="relative top-0 z-20 flex w-full items-center justify-between py-8 pl-8 pr-16 text-white">
           <h1 className="font-bebas text-2xl font-bold">Apekshik Panigrahi</h1>
           <div className="flex gap-12 font-bebas text-2xl">
-            <div className="flex-item">Home</div>
-            <div className="flex-item">About</div>
             <Link href="/blog">
               <div className="flex-item">Blog</div>
             </Link>
+            <div className="flex-item">About</div>
             <div className="flex-item">Contact</div>
             <div className="flex-item">Resume</div>
           </div>
@@ -93,6 +94,7 @@ export default function Home() {
             <p className="py-2 text-lg">Founding Platform Engineer at Euso</p>
             <p className="py-2 text-lg">Full-Stack Web3 Developer</p>
             <p className="py-2 text-lg">A Physicist</p>
+            <p className="py-2 text-lg">UE5 Game Developer</p>
             <p className="py-2 text-lg">Toon Boom Harmony Animator</p>
             <p className="py-2 text-lg">SwiftUI Developer</p>
             {/* Vertical Line */}
