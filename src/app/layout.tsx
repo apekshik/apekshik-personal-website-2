@@ -1,3 +1,4 @@
+// app/layout.tsx
 import type { Metadata } from "next";
 import { Inter, Bebas_Neue, Abril_Fatface } from "next/font/google";
 import "./globals.css";

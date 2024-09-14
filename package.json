@@ -9,13 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@nextui-org/react": "^2.3.6",
+    "@nextui-org/react": "^2.4.6",
     "@react-spring/web": "^9.7.3",
     "@tailwindcss/typography": "^0.5.13",
     "@tsparticles/engine": "^3.4.0",
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.4.0",
-    "framer-motion": "^11.1.9",
+    "framer-motion": "^11.5.4",
     "fs": "^0.0.1-security",
     "gray-matter": "^4.0.3",
     "katex": "^0.16.10",

@@ -78,6 +78,9 @@ export default function Home() {
         <nav className="relative top-0 z-20 flex w-full items-center justify-between py-8 pl-8 pr-16 text-white">
           <h1 className="font-bebas text-2xl font-bold">Apekshik Panigrahi</h1>
           <div className="flex gap-12 font-bebas text-2xl">
+            <Link href="/vishva">
+              <div className="flex-item">Vishva</div>
+            </Link>
             <Link href="/blog">
               <div className="flex-item">Blog</div>
             </Link>
