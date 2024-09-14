@@ -23,6 +23,11 @@ body {
   color: white; /* Enforce light text */
 }
 
+.dark-mode {
+  background-color: black !important;
+  color: white !important;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

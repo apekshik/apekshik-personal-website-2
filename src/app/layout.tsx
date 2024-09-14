@@ -32,7 +32,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${bebasNeue.variable} ${abrilFatFace.variable}`}>
+      <body className={`dark ${bebasNeue.variable} ${abrilFatFace.variable}`}>
         <Providers>{children}</Providers>
       </body>
     </html>

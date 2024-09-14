@@ -6,12 +6,13 @@ import CustomSearchInput from "./CustomSearchInput";
 
 const VishvaSearch = () => {
   return (
-    <div className="flex w-full items-center justify-center">
+    <div className="flex min-h-screen w-full items-center justify-center">
       <div className="flex h-full w-full items-center justify-center p-16">
         <Textarea
           label="Description"
           placeholder="Enter your description"
-          className="max-w-xs"
+          variant="flat"
+          className="max-w-2xl"
         />
       </div>
     </div>
