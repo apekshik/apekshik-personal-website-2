@@ -63,9 +63,14 @@ const VishvaSearch = () => {
   return (
     <div className="flex min-h-screen w-full items-center justify-center">
       <div className="flex h-full w-full flex-col items-center justify-center space-y-6">
-        <h1 className="text-center font-bebas text-8xl font-bold text-white">
-          VISHVA
-        </h1>
+        <div className="">
+          <h1 className="text-center font-bebas text-8xl font-bold text-white">
+            VISHVA
+          </h1>
+          <p className="text-center font-bebas text-gray-400">
+            The modern Search Engine
+          </p>
+        </div>
         <div className="w-1/2">
           <Textarea
             placeholder="Search through the vishva (Universe)..."
