@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Skeleton } from "@nextui-org/react";
 import ImageGrid from "./ImageGrid";
-import YouTubePreview from "./YoutubePreview"; // Import the new YouTubePreview component
+import YouTubePreview from "./YouTubePreview"; // Import the new YouTubePreview component
 
 interface CardProps {
   websiteName: string;
