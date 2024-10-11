@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Skeleton } from "@nextui-org/react";
 import ImageGrid from "./ImageGrid";
+import YouTubePreview from "./YoutubePreview"; // Import the new YouTubePreview component
 
 interface CardProps {
   websiteName: string;
@@ -24,9 +25,19 @@ const Card: React.FC<CardProps> = ({
   const [loadingSummary, setLoadingSummary] = useState(false);
   const [loadingImages, setLoadingImages] = useState(false);
 
+  // Utility function to check if the URL is a YouTube link and extract the video ID
+  const getYouTubeVideoId = (url: string): string | null => {
+    const match = url.match(
+      /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/,
+    );
+    return match ? match[1] : null;
+  };
+
+  const videoId = getYouTubeVideoId(url);
+
   const handleMouseEnter = async () => {
     setIsHovered(true);
-    if (!summary && !loading) {
+    if (!summary && !loading && !videoId) {
       setLoading(true);
       setLoadingSummary(true);
       setLoadingImages(true); // Start loading for both summary and images
@@ -75,7 +86,6 @@ const Card: React.FC<CardProps> = ({
       onMouseLeave={handleMouseLeave}
     >
       <div className="flex">
-        {/* Content container */}
         <div className="flex-grow">
           <h2 className="mb-1 text-xl font-bold text-blue-400">{title}</h2>
           <p className="mb-1 text-sm text-gray-400">{websiteName}</p>
@@ -88,40 +98,47 @@ const Card: React.FC<CardProps> = ({
             {url}
           </a>
 
-          {/* Expandable summary with dynamic height */}
+          {/* Expandable content with dynamic height */}
           <div
             className={`text-gray-300 transition-all duration-300 ease-in-out ${
               isHovered ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0"
             } overflow-hidden`}
           >
-            {/* If loading, show skeleton; else show the summary and images */}
-            {loadingSummary ? (
-              <div className="flex w-full max-w-[300px] flex-col gap-2">
-                <p className="font-bold">GENERATING SUMMARY</p>
-                <Skeleton className="h-3 w-3/5 rounded-lg" />
-                <Skeleton className="h-3 w-4/5 rounded-lg" />
-                <Skeleton className="h-16 w-2/5 rounded-lg" />
-              </div>
+            {/* Show the video preview if it's a YouTube link and the card is hovered */}
+            {videoId && isHovered ? (
+              <YouTubePreview videoId={videoId} /> // Use the new YouTubePreview component
             ) : (
-              <p>{summary}</p>
-            )}
-
-            {/* Display the images below the summary */}
-            {loadingImages ? (
-              <div>
-                <p className="font-bold">LOADING IMAGES</p>
-                <div className="mt-2 flex w-full max-w-[300px] flex-row justify-center gap-2">
-                  <Skeleton className="h-32 w-32 rounded-lg" />
-                  <Skeleton className="h-32 w-32 rounded-lg" />
-                  <Skeleton className="h-32 w-32 rounded-lg" />
-                </div>
-              </div>
-            ) : (
-              <div className="mt-2 flex flex-wrap items-center justify-center gap-2">
-                {Array.isArray(images) && images.length > 0 && (
-                  <ImageGrid images={images} />
+              <>
+                {/* If loading, show skeleton; else show the summary and images */}
+                {loadingSummary ? (
+                  <div className="flex w-full max-w-[300px] flex-col gap-2">
+                    <p className="font-bold">GENERATING SUMMARY</p>
+                    <Skeleton className="h-3 w-3/5 rounded-lg" />
+                    <Skeleton className="h-3 w-4/5 rounded-lg" />
+                    <Skeleton className="h-16 w-2/5 rounded-lg" />
+                  </div>
+                ) : (
+                  <p>{summary}</p>
                 )}
-              </div>
+
+                {/* Display the images below the summary */}
+                {loadingImages ? (
+                  <div>
+                    <p className="font-bold">LOADING IMAGES</p>
+                    <div className="mt-2 flex w-full max-w-[300px] flex-row justify-center gap-2">
+                      <Skeleton className="h-32 w-32 rounded-lg" />
+                      <Skeleton className="h-32 w-32 rounded-lg" />
+                      <Skeleton className="h-32 w-32 rounded-lg" />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="mt-2 flex flex-wrap items-center justify-center gap-2">
+                    {Array.isArray(images) && images.length > 0 && (
+                      <ImageGrid images={images} />
+                    )}
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>
