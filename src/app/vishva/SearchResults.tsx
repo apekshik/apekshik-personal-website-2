@@ -3,11 +3,16 @@ import React from "react";
 import Card from "./Card"; // Assuming Card component is named VishvaCard for your use case
 
 interface SearchResultProps {
+  query: string;
   results: Array<any>; // Array of search results
   loading: boolean; // Loading state to display while fetching results
 }
 
-const SearchResults: React.FC<SearchResultProps> = ({ results, loading }) => {
+const SearchResults: React.FC<SearchResultProps> = ({
+  query,
+  results,
+  loading,
+}) => {
   return (
     <div className="mt-4">
       {results.length > 0 ? (
@@ -23,6 +28,7 @@ const SearchResults: React.FC<SearchResultProps> = ({ results, loading }) => {
             return (
               <li key={index} className="mb-4">
                 <Card
+                  query={query}
                   websiteName={result.displayLink}
                   url={result.link}
                   title={result.title}
@@ -34,7 +40,7 @@ const SearchResults: React.FC<SearchResultProps> = ({ results, loading }) => {
           })}
         </ul>
       ) : (
-        !loading && <p className="text-white">No results found.</p>
+        !loading && <p className="text-white"></p>
       )}
     </div>
   );
