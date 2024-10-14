@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { Skeleton } from "@nextui-org/react";
 import ImageGrid from "./ImageGrid";
 import YouTubePreview from "./YouTubePreview"; // Import the new YouTubePreview component
@@ -6,8 +6,10 @@ import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
 import rehypeHighlight from "rehype-highlight";
+import { readStreamableValue } from "ai/rsc";
+import { generate } from "@/utils/openaiStream";
 
-interface CardProps {
+interface CardRSCProps {
   query: string;
   websiteName: string;
   url: string;
@@ -16,7 +18,7 @@ interface CardProps {
   imageUrl: string;
 }
 
-const Card: React.FC<CardProps> = ({
+const CardRSC: React.FC<CardRSCProps> = ({
   query,
   websiteName,
   url,
@@ -41,45 +43,48 @@ const Card: React.FC<CardProps> = ({
 
   const videoId = getYouTubeVideoId(url);
 
-  const handleMouseEnter = async () => {
-    setIsHovered(true);
-    if (!summary && !loading && !videoId) {
-      setLoading(true);
-      setLoadingSummary(true);
-      setLoadingImages(true); // Start loading for both summary and images
-      try {
-        // Use Promise.all to fetch both summary and images asynchronously
-        const [summaryResponse, imagesResponse] = await Promise.all([
-          fetch("/api/summarize", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ url, query }),
-          }),
-          fetch("/api/fetch-images", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ url }), // Assuming you have an endpoint to fetch images
-          }),
-        ]);
+  const fetchStreamingSummary = useCallback(async () => {
+    setLoadingSummary(true);
+    setSummary("");
 
-        const summaryData = await summaryResponse.json();
-        const imagesData = await imagesResponse.json();
-
-        setSummary(summaryData.summary);
-        setImages(imagesData.images || []); // Ensure images is always an array
-      } catch (error) {
-        console.error("Error fetching summary and images:", error);
-      } finally {
-        setLoading(false); // Stop loading for both summary and images
-        setLoadingSummary(false);
-        setLoadingImages(false);
+    try {
+      const { output } = await generate(query, url);
+      for await (const delta of readStreamableValue(output)) {
+        setSummary((currentSummary) => `${currentSummary}${delta}`);
       }
+    } catch (error) {
+      console.error("Error fetching streaming summary:", error);
+    } finally {
+      setLoadingSummary(false);
     }
-  };
+  }, [query, url]);
+
+  const fetchImages = useCallback(async () => {
+    setLoadingImages(true);
+    try {
+      const response = await fetch("/api/fetch-images", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ url }),
+      });
+      const data = await response.json();
+      setImages(data.images || []);
+    } catch (error) {
+      console.error("Error fetching images:", error);
+    } finally {
+      setLoadingImages(false);
+    }
+  }, [url]);
+
+  const handleMouseEnter = useCallback(() => {
+    setIsHovered(true);
+    if (!summary && !loadingSummary && !videoId) {
+      fetchStreamingSummary();
+      fetchImages();
+    }
+  }, [summary, loadingSummary, videoId, fetchStreamingSummary, fetchImages]);
 
   const handleMouseLeave = () => {
     setIsHovered(false);
@@ -113,19 +118,10 @@ const Card: React.FC<CardProps> = ({
             } overflow-hidden`}
           >
             {videoId && isHovered ? (
-              <div className="w-full max-w-full overflow-hidden">
-                <YouTubePreview videoId={videoId} />
-              </div>
+              <YouTubePreview videoId={videoId} />
             ) : (
               <>
-                {loadingSummary ? (
-                  <div className="flex w-full max-w-full flex-col gap-2">
-                    <p className="font-bold">GENERATING SUMMARY</p>
-                    <Skeleton className="h-3 w-3/5 rounded-lg" />
-                    <Skeleton className="h-3 w-4/5 rounded-lg" />
-                    <Skeleton className="h-16 w-2/5 rounded-lg" />
-                  </div>
-                ) : (
+                {loadingSummary || summary ? (
                   <div className="w-full max-w-full">
                     <p className="bg-gradient-to-r from-yellow-400 to-red-800 bg-clip-text text-lg font-bold text-transparent">
                       Intent Based Summary
@@ -139,14 +135,14 @@ const Card: React.FC<CardProps> = ({
                         ]}
                         className="markdown-content break-words"
                       >
-                        {summary || ""}
+                        {summary || "Thinking..."}
                       </ReactMarkdown>
                     </div>
                   </div>
-                )}
+                ) : null}
 
                 {loadingImages ? (
-                  <div className="w-full max-w-full">
+                  <div className="mt-4">
                     <p className="font-bold">LOADING IMAGES</p>
                     <div className="mt-2 flex w-full max-w-full flex-row justify-center gap-2">
                       <Skeleton className="h-32 w-32 rounded-lg" />
@@ -155,10 +151,8 @@ const Card: React.FC<CardProps> = ({
                     </div>
                   </div>
                 ) : (
-                  <div className="mt-2 flex w-full max-w-full flex-wrap items-center justify-center gap-2">
-                    {Array.isArray(images) && images.length > 0 && (
-                      <ImageGrid images={images} />
-                    )}
+                  <div className="mt-4">
+                    {images.length > 0 && <ImageGrid images={images} />}
                   </div>
                 )}
               </>
@@ -170,4 +164,4 @@ const Card: React.FC<CardProps> = ({
   );
 };
 
-export default Card;
+export default CardRSC;

@@ -1,6 +1,7 @@
 // app/vishva/SearchResults.tsx
 import React from "react";
 import Card from "./Card"; // Assuming Card component is named VishvaCard for your use case
+import CardRSC from "./CardRSC";
 
 interface SearchResultProps {
   query: string;
@@ -27,7 +28,7 @@ const SearchResults: React.FC<SearchResultProps> = ({
 
             return (
               <li key={index} className="mb-4">
-                <Card
+                <CardRSC
                   query={query}
                   websiteName={result.displayLink}
                   url={result.link}
