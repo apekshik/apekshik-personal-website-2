@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { load } from 'cheerio'; // Use named import for 'load' from 'cheerio'
+import { load } from 'cheerio';
 
 export async function fetchWebpageContent(url: string) {
   try {
