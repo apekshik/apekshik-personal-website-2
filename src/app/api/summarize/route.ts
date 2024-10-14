@@ -20,6 +20,7 @@ export async function POST(request: Request) {
     // Return the summary (images are fetched separately now)
     return NextResponse.json({ summary }, { status: 200 });
   } catch (error: any) {
+    console.error('Error in API route api/summarize:', error);  // Log the full error
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
