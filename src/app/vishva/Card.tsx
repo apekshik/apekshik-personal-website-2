@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import { Skeleton } from "@nextui-org/react";
 import ImageGrid from "./ImageGrid";
 import YouTubePreview from "./YouTubePreview"; // Import the new YouTubePreview component
+import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
+import rehypeSanitize from "rehype-sanitize";
+import rehypeHighlight from "rehype-highlight";
 
 interface CardProps {
   query: string;
@@ -120,7 +124,23 @@ const Card: React.FC<CardProps> = ({
                     <Skeleton className="h-16 w-2/5 rounded-lg" />
                   </div>
                 ) : (
-                  <p>{summary}</p>
+                  <div>
+                    <p className="bg-gradient-to-r from-yellow-400 to-red-800 bg-clip-text text-lg font-bold text-transparent">
+                      Summary
+                    </p>
+                    <div className="mt-2 rounded-md border-2 border-yellow-400 p-4">
+                      <ReactMarkdown
+                        rehypePlugins={[
+                          rehypeRaw,
+                          rehypeSanitize,
+                          rehypeHighlight,
+                        ]}
+                        className="markdown-content"
+                      >
+                        {summary || ""}
+                      </ReactMarkdown>
+                    </div>
+                  </div>
                 )}
 
                 {/* Display the images below the summary */}

@@ -11,7 +11,7 @@ export async function generateSummary(prompt: string, webpageContent: string) {
     const systemPrompt = `
 **System Prompt:**
 
-You are an AI assistant designed to analyze markdown content from webpages and respond to user queries. When given a user query and webpage content, follow these rules:
+You are an AI assistant designed to analyze web content from webpages and respond to user queries. When given a user query and webpage content, follow these rules:
 
 1. Generate a concise response (limited to 100 words) that directly answers the query, using any relevant code blocks from the webpage if appropriate.
 2. Only use code blocks that are already present in the webpage and only for code snippets.
@@ -23,7 +23,7 @@ Keep your responses precise and within the 100-word limit.
     const userPrompt = `
 **Prompt:**
 
-You are provided with the markdown content of a webpage and a user query. Your task is to process the markdown content and:
+You are provided with the content of a webpage and a user query. Your task is to process the webpage content and:
 
 1. Generate a concise snippet (within 100 words) that best answers the user's query.
    - If the webpage contains relevant code blocks, include them in your response.
@@ -31,7 +31,7 @@ You are provided with the markdown content of a webpage and a user query. Your t
 3. If no specific intent is recognized from the query, provide a brief summary of the page.
 
 **Inputs:**
-- **Markdown Content**: ${webpageContent}
+- **Webpage Content**: ${webpageContent}
 - **User Query**: ${prompt}
 
 **Output**: 
@@ -40,7 +40,7 @@ You are provided with the markdown content of a webpage and a user query. Your t
 
 
     const response = await openai.chat.completions.create({
-      model: "gpt-4o",
+      model: "gpt-4o-mini",
       messages: [
         {
           role: "system",
