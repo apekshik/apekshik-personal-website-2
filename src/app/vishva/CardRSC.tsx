@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { Image } from "@nextui-org/react";
+import { Button, Image } from "@nextui-org/react";
 import YouTubePreview from "./YouTubePreview";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
@@ -77,6 +77,7 @@ const CardRSC: React.FC<CardRSCProps> = ({
         {/* Website Image */}
         <div className="mr-2 flex-shrink-0">
           <Image
+            isBlurred
             src={imageUrl}
             alt={`${websiteName} thumbnail`}
             width={60}
@@ -113,9 +114,15 @@ const CardRSC: React.FC<CardRSCProps> = ({
               <>
                 {loadingSummary || summary ? (
                   <div className="w-full max-w-full">
-                    <p className="bg-gradient-to-r from-yellow-400 to-red-800 bg-clip-text text-lg font-bold text-transparent">
-                      Intent Based Summary
-                    </p>
+                    <div className="flex items-center justify-between">
+                      <p className="bg-gradient-to-r from-yellow-400 to-red-800 bg-clip-text text-lg font-bold text-transparent">
+                        Intent Based Summary
+                      </p>
+                      <Button color="success" variant="shadow" size="sm">
+                        Peek Further
+                      </Button>
+                    </div>
+
                     <div className="mt-2 overflow-hidden rounded-md bg-gray-800 p-4">
                       {summary ? (
                         <ReactMarkdown
