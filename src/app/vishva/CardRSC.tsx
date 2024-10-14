@@ -8,6 +8,8 @@ import rehypeSanitize from "rehype-sanitize";
 import rehypeHighlight from "rehype-highlight";
 import { readStreamableValue } from "ai/rsc";
 import { generate } from "@/utils/openaiStream";
+import PulseDiv from "./PulseDiv";
+import GridLoader from "react-spinners/GridLoader";
 
 interface CardRSCProps {
   query: string;
@@ -127,16 +129,29 @@ const CardRSC: React.FC<CardRSCProps> = ({
                       Intent Based Summary
                     </p>
                     <div className="mt-2 overflow-auto rounded-md border-2 border-yellow-400 p-4">
-                      <ReactMarkdown
-                        rehypePlugins={[
-                          rehypeRaw,
-                          rehypeSanitize,
-                          rehypeHighlight,
-                        ]}
-                        className="markdown-content break-words"
-                      >
-                        {summary || "Thinking..."}
-                      </ReactMarkdown>
+                      {summary ? (
+                        <ReactMarkdown
+                          rehypePlugins={[
+                            rehypeRaw,
+                            rehypeSanitize,
+                            rehypeHighlight,
+                          ]}
+                          className="markdown-content break-words"
+                        >
+                          {summary}
+                        </ReactMarkdown>
+                      ) : (
+                        <PulseDiv duration={1.5} easing="easeInOut">
+                          <div className="flex items-center justify-center space-x-2">
+                            <GridLoader
+                              aria-label="Loading Spinner"
+                              color="#ffffff"
+                              size={4}
+                            />
+                            <div className="text-lg font-bold">Thinking</div>
+                          </div>
+                        </PulseDiv>
+                      )}
                     </div>
                   </div>
                 ) : null}
