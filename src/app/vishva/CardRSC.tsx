@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from "react";
-import { Skeleton } from "@nextui-org/react";
-import ImageGrid from "./ImageGrid";
-import YouTubePreview from "./YouTubePreview"; // Import the new YouTubePreview component
+import { Image } from "@nextui-org/react";
+import YouTubePreview from "./YouTubePreview";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
@@ -28,14 +27,10 @@ const CardRSC: React.FC<CardRSCProps> = ({
   snippet,
   imageUrl,
 }) => {
-  const [isHovered, setIsHovered] = useState(false); // Track hover state
+  const [isHovered, setIsHovered] = useState(false);
   const [summary, setSummary] = useState<string | null>(null);
-  const [images, setImages] = useState<string[]>([]); // Store fetched images
-  const [loading, setLoading] = useState(false); // Track loading state
   const [loadingSummary, setLoadingSummary] = useState(false);
-  const [loadingImages, setLoadingImages] = useState(false);
 
-  // Utility function to check if the URL is a YouTube link and extract the video ID
   const getYouTubeVideoId = (url: string): string | null => {
     const match = url.match(
       /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/,
@@ -61,32 +56,12 @@ const CardRSC: React.FC<CardRSCProps> = ({
     }
   }, [query, url]);
 
-  const fetchImages = useCallback(async () => {
-    setLoadingImages(true);
-    try {
-      const response = await fetch("/api/fetch-images", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ url }),
-      });
-      const data = await response.json();
-      setImages(data.images || []);
-    } catch (error) {
-      console.error("Error fetching images:", error);
-    } finally {
-      setLoadingImages(false);
-    }
-  }, [url]);
-
   const handleMouseEnter = useCallback(() => {
     setIsHovered(true);
     if (!summary && !loadingSummary && !videoId) {
       fetchStreamingSummary();
-      fetchImages();
     }
-  }, [summary, loadingSummary, videoId, fetchStreamingSummary, fetchImages]);
+  }, [summary, loadingSummary, videoId, fetchStreamingSummary]);
 
   const handleMouseLeave = () => {
     setIsHovered(false);
@@ -98,17 +73,30 @@ const CardRSC: React.FC<CardRSCProps> = ({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <div className="flex flex-col">
-        <div className="flex-grow">
-          <h2 className="mb-1 break-words text-xl font-bold text-blue-400">
+      <div className="flex flex-nowrap">
+        {/* Website Image */}
+        <div className="mr-2 flex-shrink-0">
+          <Image
+            src={imageUrl}
+            alt={`${websiteName} thumbnail`}
+            width={60}
+            height={60}
+            className="rounded-md object-cover"
+            loading="lazy"
+          />
+        </div>
+
+        {/* Content */}
+        <div className="min-w-0 flex-grow">
+          <h2 className="mb-1 truncate text-xl font-bold text-blue-400">
             {title}
           </h2>
-          <p className="mb-1 text-sm text-gray-400">{websiteName}</p>
+          <p className="mb-1 truncate text-sm text-gray-400">{websiteName}</p>
           <a
             href={url}
             target="_blank"
             rel="noopener noreferrer"
-            className="mb-2 inline-block break-all text-sm text-blue-500 hover:underline"
+            className="mb-2 block truncate text-sm text-blue-500 hover:underline"
           >
             {url}
           </a>
@@ -128,7 +116,7 @@ const CardRSC: React.FC<CardRSCProps> = ({
                     <p className="bg-gradient-to-r from-yellow-400 to-red-800 bg-clip-text text-lg font-bold text-transparent">
                       Intent Based Summary
                     </p>
-                    <div className="mt-2 overflow-auto rounded-md border-2 border-yellow-400 p-4">
+                    <div className="mt-2 overflow-hidden rounded-md bg-gray-800 p-4">
                       {summary ? (
                         <ReactMarkdown
                           rehypePlugins={[
@@ -155,21 +143,6 @@ const CardRSC: React.FC<CardRSCProps> = ({
                     </div>
                   </div>
                 ) : null}
-
-                {loadingImages ? (
-                  <div className="mt-4">
-                    <p className="font-bold">LOADING IMAGES</p>
-                    <div className="mt-2 flex w-full max-w-full flex-row justify-center gap-2">
-                      <Skeleton className="h-32 w-32 rounded-lg" />
-                      <Skeleton className="h-32 w-32 rounded-lg" />
-                      <Skeleton className="h-32 w-32 rounded-lg" />
-                    </div>
-                  </div>
-                ) : (
-                  <div className="mt-4">
-                    {images.length > 0 && <ImageGrid images={images} />}
-                  </div>
-                )}
               </>
             )}
           </div>

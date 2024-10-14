@@ -27,7 +27,7 @@ const SearchResults: React.FC<SearchResultProps> = ({
               ""; // Fallback to empty string if no image is found
 
             return (
-              <li key={index} className="mb-4">
+              <li key={index} className="mb-2">
                 <CardRSC
                   query={query}
                   websiteName={result.displayLink}
