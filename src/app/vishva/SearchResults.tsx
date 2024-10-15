@@ -1,47 +1,64 @@
-// app/vishva/SearchResults.tsx
-import React from "react";
-import Card from "./Card"; // Assuming Card component is named VishvaCard for your use case
+import React, { useState } from "react";
 import CardRSC from "./CardRSC";
+import ChatWindow from "./chatComponents/chatWindow";
 
 interface SearchResultProps {
   query: string;
-  results: Array<any>; // Array of search results
-  loading: boolean; // Loading state to display while fetching results
+  results: Array<any>;
+  loading: boolean;
+  showChat: boolean;
+  setShowChat: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const SearchResults: React.FC<SearchResultProps> = ({
   query,
   results,
   loading,
+  showChat,
+  setShowChat,
 }) => {
-  return (
-    <div className="mt-4">
-      {results.length > 0 ? (
-        <ul>
-          <p className="mb-2 text-2xl font-bold text-white">Results</p>
-          {results.map((result, index) => {
-            // Extract image from the search result's pagemap
-            const imageUrl =
-              result.pagemap?.cse_image?.[0]?.src ||
-              result.pagemap?.cse_thumbnail?.[0]?.src ||
-              ""; // Fallback to empty string if no image is found
+  const [activeChatUrl, setActiveChatUrl] = useState<string | undefined>();
 
-            return (
-              <li key={index} className="mb-2">
-                <CardRSC
-                  query={query}
-                  websiteName={result.displayLink}
-                  url={result.link}
-                  title={result.title}
-                  snippet={result.snippet}
-                  imageUrl={imageUrl} // Pass the extracted image URL to VishvaCard
-                />
-              </li>
-            );
-          })}
+  const handlePeekFurther = (url: string) => {
+    setActiveChatUrl(url);
+    setShowChat(true);
+  };
+
+  const handleCloseChat = () => {
+    setShowChat(false);
+    setActiveChatUrl(undefined);
+  };
+
+  return (
+    <div className="w-full">
+      {results.length > 0 ? (
+        <ul className="w-full p-0">
+          <p className="my-2 text-2xl font-bold text-white">Results</p>
+          {results.map((result, index) => (
+            <li key={index} className="mb-2 w-full">
+              <CardRSC
+                query={query}
+                websiteName={result.displayLink}
+                url={result.link}
+                title={result.title}
+                snippet={result.snippet}
+                imageUrl={
+                  result.pagemap?.cse_image?.[0]?.src ||
+                  result.pagemap?.cse_thumbnail?.[0]?.src ||
+                  ""
+                }
+                onPeekFurther={handlePeekFurther}
+              />
+            </li>
+          ))}
         </ul>
       ) : (
         !loading && <p className="text-white"></p>
+      )}
+      {showChat && (
+        <div className="fixed bottom-0 left-1/2 right-0 top-0 w-1/2 p-4">
+          <ChatWindow url={activeChatUrl} onClose={handleCloseChat} />
+        </div>
       )}
     </div>
   );

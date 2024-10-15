@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Textarea, Button, Tooltip, Chip } from "@nextui-org/react";
 
 import SearchResults from "./SearchResults";
+import ChatWindow from "./chatComponents/chatWindow";
 
 const VishvaSearch = () => {
   const [query, setQuery] = useState(""); // State for query input
@@ -10,6 +11,7 @@ const VishvaSearch = () => {
   const [filters, setFilters] = useState<string[]>([]); // State for smart filters
   const [loading, setLoading] = useState(false); // State to track loading
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+  const [showChat, setShowChat] = useState(false);
 
   const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
   const CX = process.env.NEXT_PUBLIC_GOOGLE_CX;
@@ -61,78 +63,94 @@ const VishvaSearch = () => {
   };
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center">
-      <div className="flex h-full w-full flex-col items-center justify-center space-y-6">
-        <div className="">
-          <h1 className="text-center font-bebas text-8xl font-bold text-white">
-            VISHVA
-          </h1>
-          <p className="text-center font-bebas text-gray-400">
-            The modern Search Engine
-          </p>
-        </div>
-        <div className="w-1/2">
-          <Textarea
-            placeholder="Search through the vishva (Universe)..."
-            minRows={1}
-            maxRows={15}
-            variant="bordered"
-            size="lg"
-            className="w-full"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onKeyDown={handleKeyDown}
-          />
-
-          {/* Smart Filters */}
-          <div className="mt-4 flex flex-wrap gap-2">
-            {filters.length > 0 && (
-              <>
-                {filters.map((filter, index) => (
-                  <Chip
-                    key={index}
-                    color="warning"
-                    variant={selectedFilters.includes(filter) ? "faded" : "dot"} // Change variant based on selection
-                    onClick={() => handleChipClick(filter)} // Handle chip click
-                  >
-                    {filter}
-                  </Chip>
-                ))}
-              </>
-            )}
-          </div>
-
-          <div className="mt-4 flex w-full gap-2">
-            <Tooltip
-              showArrow={true}
-              placement="bottom"
-              content="Search like it's Google but see the magic"
+    <div className="flex min-h-screen w-full">
+      <div
+        className={`transition-all duration-300 ${
+          showChat ? "w-1/2" : "mx-auto w-1/2"
+        }`}
+      >
+        <div className="flex h-full w-full flex-col items-start justify-center space-y-2 p-4 pl-8">
+          <div
+            className={`w-full ${showChat ? "flex items-center justify-between" : ""}`}
+          >
+            <h1
+              className={`font-bebas font-bold text-white ${
+                showChat ? "text-4xl" : "w-full text-center text-8xl"
+              }`}
             >
-              <Button
-                radius="sm"
-                color="warning"
-                size="sm"
-                variant="shadow"
-                isLoading={loading}
-                spinnerPlacement="end"
-                onClick={handleSearch}
-                disabled={loading}
+              VISHVA
+            </h1>
+            <p
+              className={`font-bebas text-gray-400 ${
+                showChat ? "text-xl" : "w-full text-center"
+              }`}
+            >
+              The modern Search Engine
+            </p>
+          </div>
+          <div className="w-full">
+            <Textarea
+              placeholder="Search through the vishva (Universe)..."
+              minRows={1}
+              maxRows={15}
+              variant="bordered"
+              size="lg"
+              className="w-full"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={handleKeyDown}
+            />
+
+            {/* Smart Filters */}
+            <div className="mt-4 flex flex-wrap gap-2">
+              {filters.map((filter, index) => (
+                <Chip
+                  key={index}
+                  color="warning"
+                  variant={selectedFilters.includes(filter) ? "faded" : "dot"}
+                  onClick={() => handleChipClick(filter)}
+                >
+                  {filter}
+                </Chip>
+              ))}
+            </div>
+
+            <div className="mt-4 flex w-full gap-2">
+              <Tooltip
+                content="Search like it's Google but see the magic"
+                placement="bottom"
               >
-                {loading ? "Searching" : "Search ⌘ + Enter"}
-              </Button>
-            </Tooltip>
-            <Tooltip
-              showArrow={true}
-              content="Ask like it's ChatGPT (Coming soon)"
-              placement="bottom"
-            >
-              <Button radius="sm" color="danger" size="sm" variant="flat">
-                Chat ⌥ + Enter
-              </Button>
-            </Tooltip>
-          </div>
+                <Button
+                  radius="sm"
+                  color="warning"
+                  size="sm"
+                  variant="shadow"
+                  isLoading={loading}
+                  spinnerPlacement="end"
+                  onClick={handleSearch}
+                  disabled={loading}
+                >
+                  {loading ? "Searching" : "Search ⌘ + Enter"}
+                </Button>
+              </Tooltip>
+              <Tooltip
+                content="Ask like it's ChatGPT (Coming soon)"
+                placement="bottom"
+              >
+                <Button radius="sm" color="danger" size="sm" variant="flat">
+                  Chat ⌥ + Enter
+                </Button>
+              </Tooltip>
+            </div>
 
-          <SearchResults query={query} results={results} loading={loading} />
+            <SearchResults
+              query={query}
+              results={results}
+              loading={loading}
+              showChat={showChat}
+              setShowChat={setShowChat}
+            />
+          </div>
         </div>
       </div>
     </div>

@@ -17,6 +17,7 @@ interface CardRSCProps {
   title: string;
   snippet: string;
   imageUrl: string;
+  onPeekFurther: (url: string) => void;
 }
 
 const CardRSC: React.FC<CardRSCProps> = ({
@@ -26,10 +27,15 @@ const CardRSC: React.FC<CardRSCProps> = ({
   title,
   snippet,
   imageUrl,
+  onPeekFurther,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [summary, setSummary] = useState<string | null>(null);
   const [loadingSummary, setLoadingSummary] = useState(false);
+
+  const handlePeekFurther = () => {
+    onPeekFurther(url);
+  };
 
   const getYouTubeVideoId = (url: string): string | null => {
     const match = url.match(
@@ -118,12 +124,17 @@ const CardRSC: React.FC<CardRSCProps> = ({
                       <p className="bg-gradient-to-r from-yellow-400 to-red-800 bg-clip-text text-lg font-bold text-transparent">
                         Intent Based Summary
                       </p>
-                      <Button color="success" variant="shadow" size="sm">
-                        Peek Further
+                      <Button
+                        color="success"
+                        variant="shadow"
+                        size="sm"
+                        onClick={handlePeekFurther}
+                      >
+                        Explore
                       </Button>
                     </div>
 
-                    <div className="mt-2 overflow-hidden rounded-md bg-gray-800 p-4">
+                    <div className="mt-2 overflow-hidden rounded-lg border border-white/40 bg-transparent p-2">
                       {summary ? (
                         <ReactMarkdown
                           rehypePlugins={[
