@@ -2,27 +2,40 @@ import React, { useState } from "react";
 import { Button, Card, CardBody } from "@nextui-org/react";
 import ChatMessage from "./chatMessage";
 import ChatInput from "./chatInput";
-import useChatStream from "@/utils/useChatStream";
+import ContextCard from "./contextCard";
+import useChatWindowStream from "@/utils/useChatWindowStream";
 
 interface ChatWindowProps {
   url?: string;
   onClose: () => void;
+  contextInfo: Array<{
+    websiteName: string;
+    title: string;
+    snippet: string;
+    imageUrl: string;
+  }>;
 }
 
-const ChatWindow: React.FC<ChatWindowProps> = ({ url, onClose }) => {
+const ChatWindow: React.FC<ChatWindowProps> = ({
+  url,
+  onClose,
+  contextInfo,
+}) => {
   const [messages, setMessages] = useState<
     Array<{ role: "user" | "assistant"; content: string }>
   >([]);
-  const { streamMessage, isStreaming } = useChatStream(url);
+  const { streamMessage, isStreaming } = useChatWindowStream(url);
 
   const handleSendMessage = async (message: string) => {
     setMessages((prevMessages) => [
       ...prevMessages,
       { role: "user", content: message },
     ]);
+
     const assistantMessage = { role: "assistant" as const, content: "" };
+
     setMessages((prevMessages) => [...prevMessages, assistantMessage]);
-    await streamMessage(message, (token) => {
+    await streamMessage(messages, (token) => {
       setMessages((prevMessages) => {
         const newMessages = [...prevMessages];
         newMessages[newMessages.length - 1].content += token;
@@ -40,6 +53,15 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ url, onClose }) => {
             Close
           </Button>
         </div>
+
+        <div className="mb-4 overflow-x-auto">
+          <div className="flex space-x-4 pb-2">
+            {contextInfo.map((info, index) => (
+              <ContextCard key={index} {...info} />
+            ))}
+          </div>
+        </div>
+
         <div className="mb-4 flex-grow overflow-y-auto">
           {messages.map((msg, index) => (
             <ChatMessage key={index} role={msg.role} content={msg.content} />

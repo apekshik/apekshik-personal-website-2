@@ -1,7 +1,7 @@
 // openaiStream.ts
 'use server';
 
-import { streamText } from 'ai';
+import { streamText, CoreMessage } from 'ai';
 import { openai } from '@ai-sdk/openai';
 import { createStreamableValue } from 'ai/rsc';
 import { fetchWebpageContent } from '@/utils/extractor';
@@ -35,6 +35,42 @@ If no specific intent is recognized from the query, provide a brief summary of t
       messages: [
         { role: 'system', content: systemPrompt },
         { role: 'user', content: userPrompt }
+      ],
+    });
+
+    for await (const delta of textStream) {
+      stream.update(delta);
+    }
+    stream.done();
+  })();
+
+  return { output: stream.value };
+}
+
+export async function generateChatWindow(messages: CoreMessage[],  url: string) {
+  const webpageContent = await fetchWebpageContent(url);
+
+  const systemPrompt = `
+You are an AI assistant designed to engage in a conversation about web content from a specific webpage. 
+Use the following webpage content as context for the conversation:
+
+${webpageContent}
+
+When responding to user messages:
+1. Provide informative and relevant answers based on the webpage content and the conversation history.
+2. If appropriate, include code snippets from the webpage, but only if they are present in the original content.
+3. Keep your responses concise and to the point, ideally within 150 words unless a longer response is necessary.
+4. If asked about something not related to the webpage content, politely redirect the conversation back to the topic at hand.
+`;
+
+  const stream = createStreamableValue('');
+
+  (async () => {
+    const { textStream } = await streamText({
+      model: openai('gpt-4o'), // Using the latest model for best performance
+      messages: [
+        { role: 'system', content: systemPrompt },
+        ...messages // Include the entire conversation history
       ],
     });
 
