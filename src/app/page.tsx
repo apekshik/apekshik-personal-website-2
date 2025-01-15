@@ -4,7 +4,6 @@ import Image from "next/image";
 import frontPic from "../../public/alien-wall-3.png";
 import backPic from "../../public/alien_wallpaper.jpg";
 import bannerPic from "../../public/bottom-left-banner.png";
-import landscapePhoto from "../../public/Apekshik Landscape Photograph.JPG";
 
 import RippleEffect from "./components/RippleEffect";
 import ParticlesBackground from "./components/ParticlesBackground";
@@ -18,8 +17,8 @@ export default function Home() {
   const [started, setStarted] = useState(true);
   const [showStartButton, setShowStartButton] = useState(false);
   const [fadeOut, setFadeOut] = useState(false);
-  const imageRef = useRef(null);
-  const textRef = useRef(null);
+  const imageRef = useRef<HTMLDivElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -135,7 +134,7 @@ export default function Home() {
             style={{ transform: "translate(-50%, -50%) translateY(-50px)" }}
           >
             <Image
-              src={landscapePhoto}
+              src="/Apekshik Landscape Photograph.JPG"
               alt="Apekshik Landscape Photo"
               fill
               style={{
