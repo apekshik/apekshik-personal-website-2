@@ -97,13 +97,13 @@ const ParticlesBackground = () => {
         particlesLoaded={particlesLoaded}
         options={options}
         style={{
-          position: "absolute",
+          position: "fixed",
           top: 0,
           left: 0,
           width: "100%",
-          height: "100vh", // Only cover the viewport height
-          zIndex: 0, // Ensure it is below other content
-          pointerEvents: "none", // Allow clicks to pass through
+          height: "100vh",
+          zIndex: -1,
+          pointerEvents: "none",
         }}
       />
     );

@@ -9,10 +9,19 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Download } from "lucide-react";
 
 export function Navbar() {
   const router = useRouter();
+
+  const handleResumeDownload = () => {
+    const link = document.createElement("a");
+    link.href = "/Apekshik Panigrahi - Resume (June 2025).pdf";
+    link.download = "Apekshik Panigrahi - Resume (June 2025).pdf";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   const works = [
     { name: "Euso AI", href: "#" },
@@ -114,8 +123,10 @@ export function Navbar() {
 
           <Button
             variant="outline"
-            className="rounded-full border-2 border-black bg-white px-6 font-bebas text-xl text-black hover:bg-gray-100"
+            className="rounded-full border-2 border-black bg-black px-6 font-bebas text-xl text-white hover:bg-gray-800 shadow-[0_0_20px_rgba(255,255,255,0.6)]"
+            onClick={handleResumeDownload}
           >
+            <Download className="mr-1 h-4 w-4" />
             Resume
           </Button>
         </div>
