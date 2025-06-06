@@ -84,6 +84,9 @@ export default function Home() {
             <Link href="/blog" className="text-2xl text-white">
               <div className="flex-item">Blog</div>
             </Link>
+            <Link href="/knowledge-graph" className="text-2xl text-white">
+              <div className="flex-item">Knowledge Graph</div>
+            </Link>
             <div className="flex-item">About</div>
             <div className="flex-item">Contact</div>
             <div className="flex-item">Resume</div>
