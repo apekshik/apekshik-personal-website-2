@@ -155,6 +155,7 @@ const roots: Node[] = [
 
 export default function KnowledgeGraph() {
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
+  const [activeRoot, setActiveRoot] = useState<string | null>(null);
   const [dimensions, setDimensions] = useState({ width: 800, height: 600 });
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [scale, setScale] = useState(1);
@@ -175,6 +176,18 @@ export default function KnowledgeGraph() {
       if (r.children) traverse(r.children, r.id);
     });
     return map;
+  }, []);
+
+  const rootAngles = useMemo(
+    () => roots.map((_, i) => (i / roots.length) * Math.PI * 2),
+    [],
+  );
+  const rootIndexMap = useMemo(() => {
+    const m: Record<string, number> = {};
+    roots.forEach((r, i) => {
+      m[r.id] = i;
+    });
+    return m;
   }, []);
 
   const animParams = useMemo(() => {
@@ -209,9 +222,10 @@ export default function KnowledgeGraph() {
   }, []);
 
   const toggleNode = (id: string, x: number, y: number) => {
+    const rootId = rootMap[id];
+    let opened = false;
     setExpanded((prev) => {
       const next = new Set(prev);
-      const rootId = rootMap[id];
       // collapse nodes from other root trees
       Array.from(next).forEach((n) => {
         if (rootMap[n] !== rootId) next.delete(n);
@@ -220,12 +234,14 @@ export default function KnowledgeGraph() {
         next.delete(id);
       } else {
         next.add(id);
+        opened = true;
       }
       return next;
     });
-    const dx = dimensions.width / 2 - (x + offset.x);
-    const dy = dimensions.height / 2 - (y + offset.y);
-    setOffset({ x: offset.x + dx * 0.8, y: offset.y + dy * 0.8 });
+    setActiveRoot(opened ? rootId : null);
+    const dx = (dimensions.width / 2 - (x + offset.x)) * 0.2;
+    const dy = (dimensions.height / 2 - (y + offset.y)) * 0.2;
+    setOffset({ x: offset.x + dx, y: offset.y + dy });
   };
 
   const renderChildren = (
@@ -316,11 +332,22 @@ export default function KnowledgeGraph() {
         transition={{ type: "spring", stiffness: 80, damping: 20 }}
       >
         {roots.map((node, idx) => {
-          const angle = (idx / roots.length) * Math.PI * 2;
-          const x = centerX + rootRadius * Math.cos(angle);
-          const y = centerY + rootRadius * Math.sin(angle);
-          const nodeX = x;
-          const nodeY = y;
+          const angle = rootAngles[idx];
+          const baseX = centerX + rootRadius * Math.cos(angle);
+          const baseY = centerY + rootRadius * Math.sin(angle);
+          let nodeX = baseX;
+          let nodeY = baseY;
+          if (activeRoot && node.id !== activeRoot) {
+            const aIdx = rootIndexMap[activeRoot];
+            const ax = centerX + rootRadius * Math.cos(rootAngles[aIdx]);
+            const ay = centerY + rootRadius * Math.sin(rootAngles[aIdx]);
+            const dx = nodeX - ax;
+            const dy = nodeY - ay;
+            const dist = Math.hypot(dx, dy) || 1;
+            const push = 80;
+            nodeX = nodeX + (dx / dist) * push;
+            nodeY = nodeY + (dy / dist) * push;
+          }
           return (
             <g key={node.id}>
               <motion.circle
