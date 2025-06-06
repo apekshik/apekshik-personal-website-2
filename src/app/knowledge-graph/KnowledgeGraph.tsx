@@ -16,6 +16,9 @@ const roots: Node[] = [
     children: [
       { id: "numbers", label: "Number Theory" },
       { id: "geometry", label: "Geometry" },
+      { id: "algebra", label: "Algebra" },
+      { id: "combinatorics", label: "Combinatorics" },
+      { id: "ineq", label: "Inequalities" },
     ],
   },
   {
@@ -24,6 +27,9 @@ const roots: Node[] = [
     children: [
       { id: "dl", label: "Deep Learning" },
       { id: "nlp", label: "NLP" },
+      { id: "cv", label: "Computer Vision" },
+      { id: "ts", label: "Time Series" },
+      { id: "gnn", label: "Graph Nets" },
     ],
   },
   {
@@ -32,13 +38,19 @@ const roots: Node[] = [
     children: [
       { id: "policy", label: "Policy Gradient" },
       { id: "qlearn", label: "Q-Learning" },
+      { id: "model", label: "Model-Based" },
+      { id: "multi", label: "Multi-Agent" },
+      { id: "imitation", label: "Imitation" },
     ],
   },
   {
     id: "physics",
     label: "Physics",
     children: [
-      { id: "classical", label: "Classical" },
+      { id: "classical", label: "Classical Mechanics" },
+      { id: "quantum", label: "Quantum" },
+      { id: "em", label: "Electromagnetism" },
+      { id: "thermo", label: "Thermodynamics" },
       { id: "irodov", label: "Irodov Problems" },
     ],
   },
@@ -47,7 +59,10 @@ const roots: Node[] = [
     label: "Computer Science",
     children: [
       { id: "algorithms", label: "Algorithms" },
+      { id: "data", label: "Data Structures" },
       { id: "systems", label: "Systems" },
+      { id: "networks", label: "Networks" },
+      { id: "compilers", label: "Compilers" },
     ],
   },
 ];
