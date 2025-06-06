@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { motion } from "framer-motion";
 
 type Node = {
@@ -70,6 +70,9 @@ const roots: Node[] = [
 export default function KnowledgeGraph() {
   const [expanded, setExpanded] = useState<string | null>(null);
   const [dimensions, setDimensions] = useState({ width: 800, height: 600 });
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const dragging = useRef(false);
+  const dragStart = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     const update = () =>
@@ -79,8 +82,11 @@ export default function KnowledgeGraph() {
     return () => window.removeEventListener("resize", update);
   }, []);
 
-  const handleRootClick = (id: string) => {
+  const handleRootClick = (id: string, x: number, y: number) => {
     setExpanded(expanded === id ? null : id);
+    const dx = dimensions.width / 2 - (x + offset.x);
+    const dy = dimensions.height / 2 - (y + offset.y);
+    setOffset({ x: offset.x + dx * 0.3, y: offset.y + dy * 0.3 });
   };
 
   const renderChildren = (
@@ -103,17 +109,17 @@ export default function KnowledgeGraph() {
             cx={x}
             cy={y}
             r={15}
-            fill="black"
+            fill="white"
             stroke="white"
             animate={{
-              cx: [x - 5, x + 5, x - 5],
-              cy: [y - 5, y + 5, y - 5],
+              cx: [x - 4, x + 5, x - 3, x + 2, x - 4],
+              cy: [y - 5, y + 4, y - 2, y + 3, y - 5],
             }}
             transition={{ duration: 8, repeat: Infinity, repeatType: "mirror" }}
           />
           <text
             x={x}
-            y={y + 25}
+            y={y + 30}
             textAnchor="middle"
             fill="white"
             className="font-bebas text-xs"
@@ -129,48 +135,70 @@ export default function KnowledgeGraph() {
   const centerY = dimensions.height / 2;
   const rootRadius = 200;
 
+  const handlePointerDown = (e: React.PointerEvent<SVGSVGElement>) => {
+    dragging.current = true;
+    dragStart.current = { x: e.clientX - offset.x, y: e.clientY - offset.y };
+  };
+
+  const handlePointerMove = (e: React.PointerEvent<SVGSVGElement>) => {
+    if (!dragging.current) return;
+    setOffset({ x: e.clientX - dragStart.current.x, y: e.clientY - dragStart.current.y });
+  };
+
+  const endDrag = () => {
+    dragging.current = false;
+  };
+
   return (
     <svg
       width={dimensions.width}
       height={dimensions.height}
       style={{ background: "black" }}
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={endDrag}
+      onPointerLeave={endDrag}
     >
-      {roots.map((node, idx) => {
-        const angle = (idx / roots.length) * Math.PI * 2;
-        const x = centerX + rootRadius * Math.cos(angle);
-        const y = centerY + rootRadius * Math.sin(angle);
-        const isExpanded = expanded === node.id;
-        const nodeX = isExpanded ? centerX : x;
-        const nodeY = isExpanded ? centerY : y;
-        return (
-          <g key={node.id}>
-            <motion.circle
-              cx={nodeX}
-              cy={nodeY}
-              r={25}
-              fill="black"
-              stroke="white"
-              onClick={() => handleRootClick(node.id)}
-              animate={{
-                cx: [nodeX - 5, nodeX + 5, nodeX - 5],
-                cy: [nodeY - 5, nodeY + 5, nodeY - 5],
-              }}
-              transition={{ duration: 10, repeat: Infinity, repeatType: "mirror" }}
-              style={{ cursor: "pointer" }}
-            />
-            <text
-              x={nodeX}
-              y={nodeY + 35}
-              textAnchor="middle"
-              fill="white"
-              className="font-bebas text-sm"
-            >
-              {node.label}
-            </text>
-            {renderChildren(node, nodeX, nodeY, 80)}
-          </g>
-        );
-      })}
+      <motion.g
+        animate={{ x: offset.x, y: offset.y }}
+        transition={{ type: "spring", stiffness: 80, damping: 20 }}
+      >
+        {roots.map((node, idx) => {
+          const angle = (idx / roots.length) * Math.PI * 2;
+          const x = centerX + rootRadius * Math.cos(angle);
+          const y = centerY + rootRadius * Math.sin(angle);
+          const nodeX = x;
+          const nodeY = y;
+          return (
+            <g key={node.id}>
+              <motion.circle
+                cx={nodeX}
+                cy={nodeY}
+                r={25}
+                fill="white"
+                stroke="white"
+                onClick={() => handleRootClick(node.id, nodeX, nodeY)}
+                animate={{
+                  cx: [nodeX - 5, nodeX + 3, nodeX - 4, nodeX + 2, nodeX - 5],
+                  cy: [nodeY - 4, nodeY + 5, nodeY - 3, nodeY + 2, nodeY - 4],
+                }}
+                transition={{ duration: 10, repeat: Infinity, repeatType: "mirror" }}
+                style={{ cursor: "pointer" }}
+              />
+              <text
+                x={nodeX}
+                y={nodeY + 45}
+                textAnchor="middle"
+                fill="white"
+                className="font-bebas text-sm"
+              >
+                {node.label}
+              </text>
+              {renderChildren(node, nodeX, nodeY, 80)}
+            </g>
+          );
+        })}
+      </motion.g>
     </svg>
   );
 }
