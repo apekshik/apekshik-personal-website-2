@@ -162,6 +162,21 @@ export default function KnowledgeGraph() {
   const dragStart = useRef({ x: 0, y: 0 });
   const radii = useRef<Record<string, number>>({});
 
+  const rootMap = useMemo(() => {
+    const map: Record<string, string> = {};
+    const traverse = (nodes: Node[], rootId: string) => {
+      nodes.forEach((n) => {
+        map[n.id] = rootId;
+        if (n.children) traverse(n.children, rootId);
+      });
+    };
+    roots.forEach((r) => {
+      map[r.id] = r.id;
+      if (r.children) traverse(r.children, r.id);
+    });
+    return map;
+  }, []);
+
   const animParams = useMemo(() => {
     const params: Record<string, { ax: number; ay: number; dur: number }> = {};
     const traverse = (nodes: Node[]) => {
@@ -196,6 +211,11 @@ export default function KnowledgeGraph() {
   const toggleNode = (id: string, x: number, y: number) => {
     setExpanded((prev) => {
       const next = new Set(prev);
+      const rootId = rootMap[id];
+      // collapse nodes from other root trees
+      Array.from(next).forEach((n) => {
+        if (rootMap[n] !== rootId) next.delete(n);
+      });
       if (next.has(id)) {
         next.delete(id);
       } else {
@@ -205,7 +225,7 @@ export default function KnowledgeGraph() {
     });
     const dx = dimensions.width / 2 - (x + offset.x);
     const dy = dimensions.height / 2 - (y + offset.y);
-    setOffset({ x: offset.x + dx * 0.3, y: offset.y + dy * 0.3 });
+    setOffset({ x: offset.x + dx * 0.8, y: offset.y + dy * 0.8 });
   };
 
   const renderChildren = (
@@ -246,7 +266,7 @@ export default function KnowledgeGraph() {
           />
           <text
             x={childX}
-            y={childY + 30}
+            y={childY + 35}
             textAnchor="middle"
             fill="white"
             className="font-bebas text-xs"
@@ -331,7 +351,7 @@ export default function KnowledgeGraph() {
               />
               <text
                 x={nodeX}
-                y={nodeY + 45}
+                y={nodeY + 55}
                 textAnchor="middle"
                 fill="white"
                 className="font-bebas text-sm"
