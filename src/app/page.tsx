@@ -11,6 +11,7 @@ import CustomCursor from "./components/CustomCursor";
 import { Link, Button } from "@nextui-org/react";
 import WorkDropDownMenu from "./components/WorkDropDownMenu";
 import SpriteAnimation from "./components/SpriteAnimation";
+import { Navbar } from "@/components/Navbar";
 
 export default function Home() {
   const [started, setStarted] = useState(true);
@@ -75,23 +76,7 @@ export default function Home() {
         </div>
 
         {/* Navbar at the top */}
-        <nav className="relative top-0 z-20 flex w-full items-center justify-between py-8 pl-8 pr-16 text-white">
-          <h1 className="font-bebas text-2xl font-bold">Apekshik Panigrahi</h1>
-          <div className="flex gap-12 font-bebas text-2xl">
-            <Link href="/vishva" className="text-2xl text-white">
-              <div className="flex-item">Try Vishva</div>
-            </Link>
-            <Link href="/blog" className="text-2xl text-white">
-              <div className="flex-item">Blog</div>
-            </Link>
-            <Link href="/knowledge-graph" className="text-2xl text-white">
-              <div className="flex-item">Knowledge Graph</div>
-            </Link>
-            <div className="flex-item">About</div>
-            <div className="flex-item">Contact</div>
-            <div className="flex-item">Resume</div>
-          </div>
-        </nav>
+        <Navbar />
 
         {/* Main Body */}
         <div className="z-10 flex h-full items-start justify-end">
