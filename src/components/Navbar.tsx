@@ -1,96 +1,125 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { ChevronDown } from "lucide-react"
+} from "@/components/ui/dropdown-menu";
+import { ChevronDown } from "lucide-react";
 
 export function Navbar() {
-  const projects = [
-    { name: "Bouje", href: "#" },
+  const router = useRouter();
+
+  const works = [
     { name: "Euso AI", href: "#" },
+    { name: "Bouje", href: "#" },
+    { name: "Vishva", href: "/vishva" },
     { name: "Sheet Weaver", href: "#" },
     { name: "Grok Code CLI", href: "#" },
-  ]
+  ];
+
+  const fun = [
+    { name: "Knowledge Graph", href: "/knowledge-graph" },
+    { name: "Iron Man Weapons System", href: "/iron-man-weapons-system" },
+    { name: "Physics Animated", href: "/physics-animated" },
+    { name: "Art I've Made", href: "/art-ive-made" },
+  ];
 
   return (
-    <nav className="relative top-0 z-20 flex w-full items-center justify-between py-8 pl-8 pr-16 text-white">
-      <h1 className="font-bebas text-2xl font-bold">Apekshik Panigrahi</h1>
-      <div className="flex items-center gap-6">
-        <Button
-          variant="ghost"
-          className="font-bebas text-2xl text-white hover:bg-white/10 hover:text-white"
-          asChild
-        >
-          <Link href="/vishva">Try Vishva</Link>
-        </Button>
-        
-        <Button
-          variant="ghost"
-          className="font-bebas text-2xl text-white hover:bg-white/10 hover:text-white"
-          asChild
-        >
-          <Link href="/blog">Blog</Link>
-        </Button>
-        
-        <Button
-          variant="ghost"
-          className="font-bebas text-2xl text-white hover:bg-white/10 hover:text-white"
-          asChild
-        >
-          <Link href="/knowledge-graph">Knowledge Graph</Link>
-        </Button>
-
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              className="font-bebas text-2xl text-white hover:bg-white/10 hover:text-white"
-            >
-              Projects
-              <ChevronDown className="ml-2 h-5 w-5" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-48">
-            {projects.map((project) => (
-              <DropdownMenuItem
-                key={project.name}
-                className="font-bebas text-lg cursor-pointer"
+    <div className="relative top-0 z-20 w-full px-8 py-6">
+      <nav className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-8 py-4 shadow-lg backdrop-blur-lg">
+        <h1 className="font-bebas text-2xl font-bold text-white">
+          Apekshik Panigrahi
+        </h1>
+        <div className="flex items-center gap-4">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                className="rounded-full border-2 border-black bg-white px-6 font-bebas text-xl text-black hover:bg-gray-100"
               >
-                <Link href={project.href} className="w-full">
-                  {project.name}
-                </Link>
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-        
-        <Button
-          variant="ghost"
-          className="font-bebas text-2xl text-white hover:bg-white/10 hover:text-white"
-        >
-          About
-        </Button>
-        
-        <Button
-          variant="ghost"
-          className="font-bebas text-2xl text-white hover:bg-white/10 hover:text-white"
-        >
-          Contact
-        </Button>
-        
-        <Button
-          variant="ghost"
-          className="font-bebas text-2xl text-white hover:bg-white/10 hover:text-white"
-        >
-          Resume
-        </Button>
-      </div>
-    </nav>
-  )
+                Past Work
+                <ChevronDown className="ml-2 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              align="end"
+              className="w-48 rounded-lg border-2 border-black bg-white"
+            >
+              {works.map((work) => (
+                <DropdownMenuItem
+                  key={work.name}
+                  className="cursor-pointer font-bebas text-lg text-black hover:bg-gray-100"
+                >
+                  <Link href={work.href} className="w-full">
+                    {work.name}
+                  </Link>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                className="rounded-full border-2 border-black bg-white px-6 font-bebas text-xl text-black hover:bg-gray-100"
+              >
+                Fun Projects
+                <ChevronDown className="ml-2 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              align="end"
+              className="w-48 rounded-lg border-2 border-black bg-white"
+            >
+              {fun.map((fun) => (
+                <DropdownMenuItem
+                  key={fun.name}
+                  className="cursor-pointer font-bebas text-lg text-black hover:bg-gray-100"
+                >
+                  <Link href={fun.href} className="w-full">
+                    {fun.name}
+                  </Link>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <Button
+            variant="outline"
+            className="rounded-full border-2 border-black bg-white px-6 font-bebas text-xl text-black hover:bg-gray-100"
+            onClick={() => router.push("/blog")}
+          >
+            Blog
+          </Button>
+
+          <Button
+            variant="outline"
+            className="rounded-full border-2 border-black bg-white px-6 font-bebas text-xl text-black hover:bg-gray-100"
+          >
+            About
+          </Button>
+
+          <Button
+            variant="outline"
+            className="rounded-full border-2 border-black bg-white px-6 font-bebas text-xl text-black hover:bg-gray-100"
+          >
+            Contact
+          </Button>
+
+          <Button
+            variant="outline"
+            className="rounded-full border-2 border-black bg-white px-6 font-bebas text-xl text-black hover:bg-gray-100"
+          >
+            Resume
+          </Button>
+        </div>
+      </nav>
+    </div>
+  );
 }
