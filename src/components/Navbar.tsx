@@ -40,7 +40,7 @@ export function Navbar() {
             <DropdownMenuTrigger asChild>
               <Button
                 variant="outline"
-                className="rounded-full border-2 border-black bg-white px-6 font-bebas text-xl text-black hover:bg-gray-100"
+                className="rounded-lg border-2 border-black bg-white px-6 font-bebas text-xl text-black hover:bg-gray-100"
               >
                 Past Work
                 <ChevronDown className="ml-2 h-4 w-4" />
@@ -67,7 +67,7 @@ export function Navbar() {
             <DropdownMenuTrigger asChild>
               <Button
                 variant="outline"
-                className="rounded-full border-2 border-black bg-white px-6 font-bebas text-xl text-black hover:bg-gray-100"
+                className="rounded-lg border-2 border-black bg-white px-6 font-bebas text-xl text-black hover:bg-gray-100"
               >
                 Fun Projects
                 <ChevronDown className="ml-2 h-4 w-4" />
