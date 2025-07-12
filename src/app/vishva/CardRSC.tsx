@@ -142,7 +142,9 @@ const CardRSC: React.FC<CardRSCProps> = ({
                             rehypeSanitize,
                             rehypeHighlight,
                           ]}
-                          className="markdown-content break-words"
+                          components={{
+                            div: ({node, ...props}) => <div className="markdown-content break-words" {...props} />
+                          }}
                         >
                           {summary}
                         </ReactMarkdown>

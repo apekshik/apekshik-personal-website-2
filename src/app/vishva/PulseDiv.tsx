@@ -1,11 +1,11 @@
-import { motion } from "framer-motion";
+import { motion, Transition } from "framer-motion";
 import React from "react";
 
 // Define the interface for the component props
 interface PulseDivProps {
   children?: React.ReactNode; // Content to be displayed inside the container
   duration?: number; // Duration of the pulsation animation (in seconds)
-  easing?: string; // Easing function for the transition (e.g., 'easeInOut')
+  easing?: Transition["ease"]; // Easing function for the transition (e.g., 'easeInOut')
 }
 
 // Create the functional component using the props interface

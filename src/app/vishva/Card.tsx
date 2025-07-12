@@ -137,7 +137,9 @@ const Card: React.FC<CardProps> = ({
                           rehypeSanitize,
                           rehypeHighlight,
                         ]}
-                        className="markdown-content break-words"
+                        components={{
+                          div: ({node, ...props}) => <div className="markdown-content break-words" {...props} />
+                        }}
                       >
                         {summary || ""}
                       </ReactMarkdown>
