@@ -11,7 +11,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown, Download } from "lucide-react";
 
-export function Navbar() {
+interface NavbarProps {
+  onAboutClick?: () => void;
+}
+
+export function Navbar({ onAboutClick }: NavbarProps) {
   const router = useRouter();
 
   const handleResumeDownload = () => {
@@ -110,6 +114,7 @@ export function Navbar() {
           <Button
             variant="outline"
             className="rounded-full border-2 border-black bg-white px-6 font-bebas text-xl text-black hover:bg-gray-100"
+            onClick={onAboutClick}
           >
             About
           </Button>
