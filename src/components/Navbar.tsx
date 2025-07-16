@@ -33,6 +33,7 @@ export function Navbar({ onAboutClick }: NavbarProps) {
     { name: "Vishva", href: "/vishva" },
     { name: "Sheet Weaver", href: "#" },
     { name: "Grok Code CLI", href: "#" },
+    { name: "Truman AI", href: "#" },
   ];
 
   const fun = [
@@ -40,6 +41,7 @@ export function Navbar({ onAboutClick }: NavbarProps) {
     { name: "Iron Man Weapons System", href: "/iron-man-weapons-system" },
     { name: "Physics Animated", href: "/physics-animated" },
     { name: "Art I've Made", href: "/art-ive-made" },
+    { name: "Psychothermia", href: "#" },
   ];
 
   return (

@@ -18,6 +18,11 @@ export default function Home() {
   const [showStartButton, setShowStartButton] = useState(false);
   const [fadeOut, setFadeOut] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [harborImageIndex, setHarborImageIndex] = useState(0);
+  const [trumanImageIndex, setTrumanImageIndex] = useState(0);
+  const [sheetWeaverImageIndex, setSheetWeaverImageIndex] = useState(0);
+  const [eusoImageIndex, setEusoImageIndex] = useState(0);
+  const [showScrollToTop, setShowScrollToTop] = useState(false);
   const imageRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   
@@ -26,6 +31,27 @@ export default function Home() {
     "/apekshik-landscape-2.jpg",
     "/apekshik-landscape-3.jpg"
   ];
+
+  const projectImages = {
+    harbor: [
+      "/project-images/harbor-screenshot-1.png",
+      "/project-images/harbor-screenshot-2.png",
+      "/project-images/harbor-screenshot-3.png"
+    ],
+    truman: [
+      "/project-images/truman-ai-screenshot-1.png",
+      "/project-images/truman-ai-screenshot-2.png"
+    ],
+    sheetWeaver: [
+      "/project-images/sheet-weaver-screenshot-1.png",
+      "/project-images/sheet-weaver-screenshot-2.png"
+    ],
+    euso: [
+      "/project-images/euso-ai-screenshot-1.png",
+      "/project-images/euso-ai-screenshot-2.png",
+      "/project-images/euso-ai-screenshot-3.png"
+    ]
+  };
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -46,6 +72,9 @@ export default function Home() {
       if (textRef.current) {
         textRef.current.style.transform = `translateY(${-scrollY * 0.1}px)`;
       }
+
+      // Show/hide scroll to top button based on scroll position
+      setShowScrollToTop(scrollY > window.innerHeight);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -59,6 +88,35 @@ export default function Home() {
 
     return () => clearInterval(interval);
   }, [images.length]);
+
+  // Project image cycling effects
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setHarborImageIndex((prevIndex) => (prevIndex + 1) % projectImages.harbor.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTrumanImageIndex((prevIndex) => (prevIndex + 1) % projectImages.truman.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSheetWeaverImageIndex((prevIndex) => (prevIndex + 1) % projectImages.sheetWeaver.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setEusoImageIndex((prevIndex) => (prevIndex + 1) % projectImages.euso.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleStart = () => {
     setFadeOut(true);
@@ -75,6 +133,13 @@ export default function Home() {
         block: 'start'
       });
     }
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
   };
 
   return (
@@ -109,12 +174,6 @@ export default function Home() {
           clipPath: "inset(0 0 0 0)"
         }}
       >
-        <div 
-          className="absolute inset-0"
-          style={{
-            background: "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 80%, rgba(0,0,0,1) 100%)"
-          }}
-        ></div>
         <Image
           src={frontPic}
           alt="Background"
@@ -134,6 +193,74 @@ export default function Home() {
         >
           {/* Navbar at the top */}
           <Navbar onAboutClick={scrollToAbout} />
+
+          {/* Social Media Icons - Top Left (Hero page only) */}
+          <div className="absolute top-24 left-8 z-30 flex flex-col gap-3">
+            <a 
+              href="https://github.com/apekshik" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="group"
+            >
+              <div className="w-8 h-8 bg-white rounded-xl transition-all duration-300 hover:scale-125">
+                <Image
+                  src="/social-media-icons/github.png"
+                  alt="GitHub"
+                  width={32}
+                  height={32}
+                  className="w-full h-full object-contain"
+                />
+              </div>
+            </a>
+            <a 
+              href="https://x.com/apekshik" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="group"
+            >
+              <div className="w-8 h-8 bg-white rounded-xl transition-all duration-300 hover:scale-125">
+                <Image
+                  src="/social-media-icons/twitter.png"
+                  alt="X (Twitter)"
+                  width={32}
+                  height={32}
+                  className="w-full h-full object-contain"
+                />
+              </div>
+            </a>
+            <a 
+              href="https://www.linkedin.com/in/apekshik-panigrahi/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="group"
+            >
+              <div className="w-8 h-8 bg-white rounded-xl transition-all duration-300 hover:scale-125">
+                <Image
+                  src="/social-media-icons/linkedin.png"
+                  alt="LinkedIn"
+                  width={32}
+                  height={32}
+                  className="w-full h-full object-contain"
+                />
+              </div>
+            </a>
+            <a 
+              href="https://www.youtube.com/@apekplusplus" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="group"
+            >
+              <div className="w-8 h-8 bg-white rounded-xl transition-all duration-300 hover:scale-125">
+                <Image
+                  src="/social-media-icons/youtube.png"
+                  alt="YouTube"
+                  width={32}
+                  height={32}
+                  className="w-full h-full object-contain"
+                />
+              </div>
+            </a>
+          </div>
 
           {/* Main Body */}
           <div className="flex h-full items-start justify-end">
@@ -220,8 +347,8 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Third Section - Experience Timeline (Frosty Glass Overlay) */}
-        <div className="min-h-screen bg-black/70 backdrop-blur-md relative overflow-hidden">
+        {/* Third Section - Experience Timeline (Opaque Black Background) */}
+        <div className="min-h-screen bg-black relative overflow-hidden">
           <div className="container mx-auto px-8 py-16">
             <div className="max-w-6xl mx-auto">
               <div className="flex items-center mb-16">
@@ -388,7 +515,349 @@ export default function Home() {
             </div>
           </div>
         </div>
+
+        {/* Fourth Section - Previous Work Showcase */}
+        <div className="min-h-screen bg-black relative overflow-hidden">
+          <div className="container mx-auto px-8 py-16">
+            <div className="max-w-6xl mx-auto">
+              <div className="flex items-center mb-16">
+                <h2 className="font-bebas text-6xl font-bold text-white mr-8">Previous Work</h2>
+                <div className="flex-1 h-px bg-white/30"></div>
+              </div>
+              
+              <div className="space-y-24">
+                {/* Harbor Project */}
+                <div className="flex items-start gap-12">
+                  {/* Project Image */}
+                  <div className="w-[600px] h-[400px] rounded-lg overflow-hidden cursor-pointer hover:scale-105 transition-transform duration-300 relative">
+                    {projectImages.harbor.map((imageSrc, index) => (
+                      <Image
+                        key={imageSrc}
+                        src={imageSrc}
+                        alt={`Harbor Screenshot ${index + 1}`}
+                        fill
+                        style={{
+                          objectFit: "cover",
+                          objectPosition: "center",
+                          opacity: index === harborImageIndex ? 1 : 0,
+                          transition: "opacity 1s ease-in-out"
+                        }}
+                        className="absolute"
+                        priority={index === 0}
+                      />
+                    ))}
+                  </div>
+                  
+                  {/* Project Description */}
+                  <div className="flex-1 max-w-md">
+                    <div className="rounded-lg border border-white/20 bg-black/70 p-8 shadow-2xl backdrop-blur-md">
+                      <h3 className="mb-4 font-bebas text-3xl font-bold text-white">Harbor</h3>
+                      <p className="text-gray-300 font-mono text-sm leading-relaxed mb-4">
+                        Harbor is a cutting-edge platform designed to facilitate the creation, management, and orchestration of AI organizations. It provides a comprehensive framework for designing, deploying, and monitoring collections of AI agents working together toward common goals, bridging individual AI capabilities with coordinated, purpose-driven AI systems.
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {["lambdas", "ecs", "s3", "cloudfront", "dynamo-db", "nextjs", "vercel", "tailwind"].map((tech) => (
+                          <span key={tech} className="px-3 py-1 bg-white/10 text-gray-300 text-xs font-mono rounded-full border border-white/20">
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Euso AI Project */}
+                <div className="flex items-start gap-12 flex-row-reverse">
+                  {/* Project Image */}
+                  <div className="w-[600px] h-[400px] rounded-lg overflow-hidden cursor-pointer hover:scale-105 transition-transform duration-300 relative">
+                    {projectImages.euso.map((imageSrc, index) => (
+                      <Image
+                        key={imageSrc}
+                        src={imageSrc}
+                        alt={`Euso AI Screenshot ${index + 1}`}
+                        fill
+                        style={{
+                          objectFit: "cover",
+                          objectPosition: "center",
+                          opacity: index === eusoImageIndex ? 1 : 0,
+                          transition: "opacity 1s ease-in-out"
+                        }}
+                        className="absolute"
+                        priority={index === 0}
+                      />
+                    ))}
+                  </div>
+                  
+                  {/* Project Description */}
+                  <div className="flex-1 max-w-md">
+                    <div className="rounded-lg border border-white/20 bg-black/70 p-8 shadow-2xl backdrop-blur-md">
+                      <h3 className="mb-4 font-bebas text-3xl font-bold text-white">Euso AI</h3>
+                      <p className="text-gray-300 font-mono text-sm leading-relaxed mb-4">
+                        Euso AI is a Cloud Infrastructure Deployment platform that enables developers in fast-moving environments to efficiently and securely deploy infrastructure using simple natural language. Euso's fleet of agents receive natural queries about product requirements and constraints, then autonomously create, deploy, and manage backend cloud infrastructure.
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {["gcp", "cloud run", "vector-db", "terraform", "nextjs", "tailwind", "flask"].map((tech) => (
+                          <span key={tech} className="px-3 py-1 bg-white/10 text-gray-300 text-xs font-mono rounded-full border border-white/20">
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Sheet Weaver Project */}
+                <div className="flex items-start gap-12">
+                  {/* Project Image */}
+                  <div className="w-[600px] h-[400px] rounded-lg overflow-hidden cursor-pointer hover:scale-105 transition-transform duration-300 relative">
+                    {projectImages.sheetWeaver.map((imageSrc, index) => (
+                      <Image
+                        key={imageSrc}
+                        src={imageSrc}
+                        alt={`Sheet Weaver Screenshot ${index + 1}`}
+                        fill
+                        style={{
+                          objectFit: "cover",
+                          objectPosition: "center",
+                          opacity: index === sheetWeaverImageIndex ? 1 : 0,
+                          transition: "opacity 1s ease-in-out"
+                        }}
+                        className="absolute"
+                        priority={index === 0}
+                      />
+                    ))}
+                  </div>
+                  
+                  {/* Project Description */}
+                  <div className="flex-1 max-w-md">
+                    <div className="rounded-lg border border-white/20 bg-black/70 p-8 shadow-2xl backdrop-blur-md">
+                      <h3 className="mb-4 font-bebas text-3xl font-bold text-white">Sheet Weaver</h3>
+                      <p className="text-gray-300 font-mono text-sm leading-relaxed mb-4">
+                        Sheet Weaver is an intelligent spreadsheet application that allows users to create, manage, and manipulate spreadsheets using natural language. Instead of remembering complex formulas or function syntax, users can simply describe what they want to do with their data, and the AI assistant handles the technical details seamlessly.
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {["agent-sdk", "orcs-framework", "postgresql", "nextjs", "tailwind", "dynamo-db"].map((tech) => (
+                          <span key={tech} className="px-3 py-1 bg-white/10 text-gray-300 text-xs font-mono rounded-full border border-white/20">
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Truman AI Project */}
+                <div className="flex items-start gap-12 flex-row-reverse">
+                  {/* Project Image */}
+                  <div className="w-[600px] h-[400px] rounded-lg overflow-hidden cursor-pointer hover:scale-105 transition-transform duration-300 relative">
+                    {projectImages.truman.map((imageSrc, index) => (
+                      <Image
+                        key={imageSrc}
+                        src={imageSrc}
+                        alt={`Truman AI Screenshot ${index + 1}`}
+                        fill
+                        style={{
+                          objectFit: "cover",
+                          objectPosition: "center",
+                          opacity: index === trumanImageIndex ? 1 : 0,
+                          transition: "opacity 1s ease-in-out"
+                        }}
+                        className="absolute"
+                        priority={index === 0}
+                      />
+                    ))}
+                  </div>
+                  
+                  {/* Project Description */}
+                  <div className="flex-1 max-w-md">
+                    <div className="rounded-lg border border-white/20 bg-black/70 p-8 shadow-2xl backdrop-blur-md">
+                      <h3 className="mb-4 font-bebas text-3xl font-bold text-white">Truman AI</h3>
+                      <p className="text-gray-300 font-mono text-sm leading-relaxed mb-4">
+                        Truman is a universal AI coding CLI that serves as a terminal-based coding assistant with smart file editing tools and multi-provider support for OpenAI, Claude, and Grok. It features provider-agnostic design, intelligent code modifications with pattern matching, and a beautiful terminal interface with real-time streaming and colored diffs.
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {["ink", "stripe", "fastapi", "vercel"].map((tech) => (
+                          <span key={tech} className="px-3 py-1 bg-white/10 text-gray-300 text-xs font-mono rounded-full border border-white/20">
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Fifth Section - Contact */}
+        <div className="min-h-screen bg-black relative overflow-hidden">
+          <div className="container mx-auto px-8 py-16">
+            <div className="max-w-6xl mx-auto">
+              <div className="flex items-center mb-16">
+                <h2 className="font-bebas text-6xl font-bold text-white mr-8">Get In Touch</h2>
+                <div className="flex-1 h-px bg-white/30"></div>
+              </div>
+              
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                {/* Contact Info & Socials */}
+                <div className="space-y-8">
+                  <div className="rounded-lg border border-white/20 bg-black/70 p-8 shadow-2xl backdrop-blur-md">
+                    <h3 className="mb-6 font-bebas text-3xl font-bold text-white">Let's Connect</h3>
+                    <p className="text-gray-300 font-mono text-sm leading-relaxed mb-6">
+                      I'm always interested in discussing new opportunities, collaborating on exciting projects, or just having a chat about AI, software engineering, and the future of technology.
+                    </p>
+                    
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-white rounded-xl flex items-center justify-center">
+                          <span className="text-black font-mono text-sm">@</span>
+                        </div>
+                        <a href="mailto:apekshik@gmail.com" className="text-gray-300 font-mono text-sm hover:text-white transition-colors">
+                          apekshik@gmail.com
+                        </a>
+                      </div>
+                      
+                      <div className="flex items-center gap-4 pt-4">
+                        <a href="https://github.com/apekshik" target="_blank" rel="noopener noreferrer" className="group">
+                          <div className="w-10 h-10 bg-white rounded-xl transition-all duration-300 hover:scale-110 flex items-center justify-center">
+                            <Image
+                              src="/social-media-icons/github.png"
+                              alt="GitHub"
+                              width={24}
+                              height={24}
+                              className="w-6 h-6 object-contain"
+                            />
+                          </div>
+                        </a>
+                        <a href="https://x.com/apekshik" target="_blank" rel="noopener noreferrer" className="group">
+                          <div className="w-10 h-10 bg-white rounded-xl transition-all duration-300 hover:scale-110 flex items-center justify-center">
+                            <Image
+                              src="/social-media-icons/twitter.png"
+                              alt="X (Twitter)"
+                              width={24}
+                              height={24}
+                              className="w-6 h-6 object-contain"
+                            />
+                          </div>
+                        </a>
+                        <a href="https://www.linkedin.com/in/apekshik-panigrahi/" target="_blank" rel="noopener noreferrer" className="group">
+                          <div className="w-10 h-10 bg-white rounded-xl transition-all duration-300 hover:scale-110 flex items-center justify-center">
+                            <Image
+                              src="/social-media-icons/linkedin.png"
+                              alt="LinkedIn"
+                              width={24}
+                              height={24}
+                              className="w-6 h-6 object-contain"
+                            />
+                          </div>
+                        </a>
+                        <a href="https://www.youtube.com/@apekplusplus" target="_blank" rel="noopener noreferrer" className="group">
+                          <div className="w-10 h-10 bg-white rounded-xl transition-all duration-300 hover:scale-110 flex items-center justify-center">
+                            <Image
+                              src="/social-media-icons/youtube.png"
+                              alt="YouTube"
+                              width={24}
+                              height={24}
+                              className="w-6 h-6 object-contain"
+                            />
+                          </div>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Contact Form */}
+                <div className="rounded-lg border border-white/20 bg-black/70 p-8 shadow-2xl backdrop-blur-md">
+                  <h3 className="mb-6 font-bebas text-3xl font-bold text-white">Send a Message</h3>
+                  <form className="space-y-6">
+                    <div>
+                      <label htmlFor="name" className="block text-gray-300 font-mono text-sm mb-2">Name</label>
+                      <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white font-mono text-sm placeholder-gray-400 focus:outline-none focus:border-white/40 focus:bg-white/20 transition-all"
+                        placeholder="Your name"
+                        required
+                      />
+                    </div>
+                    
+                    <div>
+                      <label htmlFor="email" className="block text-gray-300 font-mono text-sm mb-2">Email</label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white font-mono text-sm placeholder-gray-400 focus:outline-none focus:border-white/40 focus:bg-white/20 transition-all"
+                        placeholder="your@email.com"
+                        required
+                      />
+                    </div>
+                    
+                    <div>
+                      <label htmlFor="subject" className="block text-gray-300 font-mono text-sm mb-2">Subject</label>
+                      <input
+                        type="text"
+                        id="subject"
+                        name="subject"
+                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white font-mono text-sm placeholder-gray-400 focus:outline-none focus:border-white/40 focus:bg-white/20 transition-all"
+                        placeholder="What's this about?"
+                        required
+                      />
+                    </div>
+                    
+                    <div>
+                      <label htmlFor="message" className="block text-gray-300 font-mono text-sm mb-2">Message</label>
+                      <textarea
+                        id="message"
+                        name="message"
+                        rows={6}
+                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white font-mono text-sm placeholder-gray-400 focus:outline-none focus:border-white/40 focus:bg-white/20 transition-all resize-none"
+                        placeholder="Tell me about your project, idea, or just say hi!"
+                        required
+                      ></textarea>
+                    </div>
+                    
+                    <button
+                      type="submit"
+                      className="w-full py-3 bg-white text-black font-bebas text-xl rounded-lg hover:bg-gray-200 transition-colors duration-300"
+                    >
+                      Send Message
+                    </button>
+                  </form>
+                </div>
+              </div>
+              
+              {/* Footer */}
+              <div className="mt-16 pt-8 border-t border-white/20 text-center">
+                <p className="text-gray-400 font-mono text-sm">
+                  Built with Next.js, TypeScript, and Tailwind CSS • © 2025 Apekshik Panigrahi
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+
+      {/* Scroll to Top Button */}
+      {showScrollToTop && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-8 right-8 z-40 w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg hover:bg-white hover:scale-110 transition-all duration-300 flex items-center justify-center group"
+          aria-label="Scroll to top"
+        >
+          <svg 
+            className="w-6 h-6 text-black transition-transform duration-300 group-hover:-translate-y-1" 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+          </svg>
+        </button>
+      )}
     </div>
   );
 }
