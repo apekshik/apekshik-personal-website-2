@@ -1,6 +1,6 @@
 // components/ParticlesBackground.js
 "use client";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, memo } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 
@@ -16,7 +16,7 @@ const ParticlesBackground = () => {
   }, []);
 
   const particlesLoaded = (container) => {
-    console.log(container);
+    // Removed console.log to improve performance
   };
 
   const options = useMemo(
@@ -66,14 +66,14 @@ const ParticlesBackground = () => {
             default: "bounce",
           },
           random: false,
-          speed: 2,
+          speed: 1,
           straight: false,
         },
         number: {
           density: {
             enable: true,
           },
-          value: 200,
+          value: 100,
         },
         opacity: {
           value: 0.8,
@@ -104,6 +104,7 @@ const ParticlesBackground = () => {
           height: "100vh",
           zIndex: 1,
           pointerEvents: "none",
+          willChange: "transform",
         }}
       />
     );
@@ -112,4 +113,4 @@ const ParticlesBackground = () => {
   return <></>;
 };
 
-export default ParticlesBackground;
+export default memo(ParticlesBackground);

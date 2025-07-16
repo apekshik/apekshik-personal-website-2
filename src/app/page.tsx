@@ -63,22 +63,32 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    let ticking = false;
+    
     const handleScroll = () => {
-      const scrollY = window.scrollY;
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const scrollY = window.scrollY;
 
-      if (imageRef.current) {
-        imageRef.current.style.transform = `translate(-50%, -50%) translateY(${scrollY * 0.3 - 50}px)`;
+          if (imageRef.current) {
+            imageRef.current.style.transform = `translate(-50%, -50%) translateY(${scrollY * 0.3 - 50}px)`;
+          }
+
+          if (textRef.current) {
+            textRef.current.style.transform = `translateY(${-scrollY * 0.1}px)`;
+          }
+
+          // Only update state if there's an actual change
+          const shouldShow = scrollY > window.innerHeight;
+          setShowScrollToTop(prev => prev !== shouldShow ? shouldShow : prev);
+          
+          ticking = false;
+        });
+        ticking = true;
       }
-
-      if (textRef.current) {
-        textRef.current.style.transform = `translateY(${-scrollY * 0.1}px)`;
-      }
-
-      // Show/hide scroll to top button based on scroll position
-      setShowScrollToTop(scrollY > window.innerHeight);
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
