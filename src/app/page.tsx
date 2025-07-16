@@ -12,6 +12,7 @@ import { Link, Button } from "@nextui-org/react";
 import WorkDropDownMenu from "./components/WorkDropDownMenu";
 import SpriteAnimation from "./components/SpriteAnimation";
 import { Navbar } from "@/components/Navbar";
+import { cn } from "@/lib/utils";
 
 export default function Home() {
   const [started, setStarted] = useState(true);
@@ -347,10 +348,10 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Third Section - Experience Timeline (Opaque Black Background) */}
+        {/* Third Section - Experience Timeline */}
         <div className="min-h-screen bg-black relative overflow-hidden">
           <div className="container mx-auto px-8 py-16">
-            <div className="max-w-6xl mx-auto">
+            <div className="max-w-4xl mx-auto">
               <div className="flex items-center mb-16">
                 <h2 className="font-bebas text-6xl font-bold text-white mr-8">Experiences</h2>
                 <div className="flex-1 h-px bg-white/30"></div>
@@ -529,7 +530,7 @@ export default function Home() {
                 {/* Harbor Project */}
                 <div className="flex items-start gap-12">
                   {/* Project Image */}
-                  <div className="w-[600px] h-[400px] rounded-lg overflow-hidden cursor-pointer hover:scale-105 transition-transform duration-300 relative">
+                  <div className="w-[600px] h-[400px] rounded-2xl overflow-hidden cursor-pointer hover:scale-105 transition-transform duration-300 relative">
                     {projectImages.harbor.map((imageSrc, index) => (
                       <Image
                         key={imageSrc}
@@ -550,7 +551,7 @@ export default function Home() {
                   
                   {/* Project Description */}
                   <div className="flex-1 max-w-md">
-                    <div className="rounded-lg border border-white/20 bg-black/70 p-8 shadow-2xl backdrop-blur-md">
+                    <div className="rounded-lg bg-black/70 p-8 shadow-[0_0_40px_rgba(255,255,255,0.2)] backdrop-blur-md">
                       <h3 className="mb-4 font-bebas text-3xl font-bold text-white">Harbor</h3>
                       <p className="text-gray-300 font-mono text-sm leading-relaxed mb-4">
                         Harbor is a cutting-edge platform designed to facilitate the creation, management, and orchestration of AI organizations. It provides a comprehensive framework for designing, deploying, and monitoring collections of AI agents working together toward common goals, bridging individual AI capabilities with coordinated, purpose-driven AI systems.
@@ -569,7 +570,7 @@ export default function Home() {
                 {/* Euso AI Project */}
                 <div className="flex items-start gap-12 flex-row-reverse">
                   {/* Project Image */}
-                  <div className="w-[600px] h-[400px] rounded-lg overflow-hidden cursor-pointer hover:scale-105 transition-transform duration-300 relative">
+                  <div className="w-[600px] h-[400px] rounded-2xl overflow-hidden cursor-pointer hover:scale-105 transition-transform duration-300 relative">
                     {projectImages.euso.map((imageSrc, index) => (
                       <Image
                         key={imageSrc}
@@ -590,7 +591,7 @@ export default function Home() {
                   
                   {/* Project Description */}
                   <div className="flex-1 max-w-md">
-                    <div className="rounded-lg border border-white/20 bg-black/70 p-8 shadow-2xl backdrop-blur-md">
+                    <div className="rounded-lg bg-black/70 p-8 shadow-[0_0_40px_rgba(255,255,255,0.2)] backdrop-blur-md">
                       <h3 className="mb-4 font-bebas text-3xl font-bold text-white">Euso AI</h3>
                       <p className="text-gray-300 font-mono text-sm leading-relaxed mb-4">
                         Euso AI is a Cloud Infrastructure Deployment platform that enables developers in fast-moving environments to efficiently and securely deploy infrastructure using simple natural language. Euso's fleet of agents receive natural queries about product requirements and constraints, then autonomously create, deploy, and manage backend cloud infrastructure.
@@ -609,7 +610,7 @@ export default function Home() {
                 {/* Sheet Weaver Project */}
                 <div className="flex items-start gap-12">
                   {/* Project Image */}
-                  <div className="w-[600px] h-[400px] rounded-lg overflow-hidden cursor-pointer hover:scale-105 transition-transform duration-300 relative">
+                  <div className="w-[600px] h-[400px] rounded-2xl overflow-hidden cursor-pointer hover:scale-105 transition-transform duration-300 relative">
                     {projectImages.sheetWeaver.map((imageSrc, index) => (
                       <Image
                         key={imageSrc}
@@ -630,7 +631,7 @@ export default function Home() {
                   
                   {/* Project Description */}
                   <div className="flex-1 max-w-md">
-                    <div className="rounded-lg border border-white/20 bg-black/70 p-8 shadow-2xl backdrop-blur-md">
+                    <div className="rounded-lg bg-black/70 p-8 shadow-[0_0_40px_rgba(255,255,255,0.2)] backdrop-blur-md">
                       <h3 className="mb-4 font-bebas text-3xl font-bold text-white">Sheet Weaver</h3>
                       <p className="text-gray-300 font-mono text-sm leading-relaxed mb-4">
                         Sheet Weaver is an intelligent spreadsheet application that allows users to create, manage, and manipulate spreadsheets using natural language. Instead of remembering complex formulas or function syntax, users can simply describe what they want to do with their data, and the AI assistant handles the technical details seamlessly.
@@ -649,7 +650,7 @@ export default function Home() {
                 {/* Truman AI Project */}
                 <div className="flex items-start gap-12 flex-row-reverse">
                   {/* Project Image */}
-                  <div className="w-[600px] h-[400px] rounded-lg overflow-hidden cursor-pointer hover:scale-105 transition-transform duration-300 relative">
+                  <div className="w-[600px] h-[400px] rounded-2xl overflow-hidden cursor-pointer hover:scale-105 transition-transform duration-300 relative">
                     {projectImages.truman.map((imageSrc, index) => (
                       <Image
                         key={imageSrc}
@@ -670,7 +671,7 @@ export default function Home() {
                   
                   {/* Project Description */}
                   <div className="flex-1 max-w-md">
-                    <div className="rounded-lg border border-white/20 bg-black/70 p-8 shadow-2xl backdrop-blur-md">
+                    <div className="rounded-lg bg-black/70 p-8 shadow-[0_0_40px_rgba(255,255,255,0.2)] backdrop-blur-md">
                       <h3 className="mb-4 font-bebas text-3xl font-bold text-white">Truman AI</h3>
                       <p className="text-gray-300 font-mono text-sm leading-relaxed mb-4">
                         Truman is a universal AI coding CLI that serves as a terminal-based coding assistant with smart file editing tools and multi-provider support for OpenAI, Claude, and Grok. It features provider-agnostic design, intelligent code modifications with pattern matching, and a beautiful terminal interface with real-time streaming and colored diffs.
@@ -692,7 +693,18 @@ export default function Home() {
 
         {/* Fifth Section - Contact */}
         <div className="min-h-screen bg-black relative overflow-hidden">
-          <div className="container mx-auto px-8 py-16">
+          {/* Dot Background Pattern */}
+          <div
+            className={cn(
+              "absolute inset-0",
+              "[background-size:20px_20px]",
+              "dark:[background-image:radial-gradient(#404040_1px,transparent_1px)]",
+            )}
+          />
+          {/* Radial gradient for the container to give a faded look */}
+          <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
+          
+          <div className="container mx-auto px-8 py-16 relative z-10">
             <div className="max-w-6xl mx-auto">
               <div className="flex items-center mb-16">
                 <h2 className="font-bebas text-6xl font-bold text-white mr-8">Get In Touch</h2>
